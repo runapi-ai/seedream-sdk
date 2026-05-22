@@ -1,4 +1,24 @@
-# Seedream API SDK for RunAPI
+<p align="center">
+  <a href="https://runapi.ai"><img src="https://runapi.ai/icon.svg" height="56" alt="RunAPI"></a>
+</p>
+
+<h3 align="center">
+  <a href="https://github.com/runapi-ai/seedream-sdk">Seedream API SDK for RunAPI</a>
+</h3>
+
+<p align="center">
+  Seedream API SDKs for JavaScript, Ruby, and Go on RunAPI.
+</p>
+
+<div align="center">
+
+[![npm](https://img.shields.io/npm/v/@runapi.ai/seedream)](https://www.npmjs.com/package/@runapi.ai/seedream)
+[![RubyGems](https://img.shields.io/gem/v/runapi-seedream)](https://rubygems.org/gems/runapi-seedream)
+[![Go Reference](https://pkg.go.dev/badge/github.com/runapi-ai/seedream-sdk/go.svg)](https://pkg.go.dev/github.com/runapi-ai/seedream-sdk/go)
+[![License](https://img.shields.io/github/license/runapi-ai/seedream-sdk)](https://github.com/runapi-ai/seedream-sdk/blob/main/LICENSE)
+
+</div>
+<br/>
 
 The seedream api SDK packages JavaScript, Ruby, and Go clients for Seedream on RunAPI. Use this seedream api SDK for text-to-image and image-to-image generation workflows that need typed installs, JSON request bodies, task polling, and consistent RunAPI errors across services.
 
