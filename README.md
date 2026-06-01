@@ -20,9 +20,9 @@
 </div>
 <br/>
 
-The seedream api SDK packages JavaScript, Ruby, and Go clients for Seedream on RunAPI. Use this seedream api SDK for text-to-image and image-to-image generation workflows that need typed installs, JSON request bodies, task polling, and consistent RunAPI errors across services.
+The seedream api SDK packages JavaScript, Ruby, and Go clients for Seedream on RunAPI. Use this seedream api SDK for v4, 4.5, and 5-lite text-to-image and editing workflows that need typed installs, JSON request bodies, task polling, and consistent RunAPI errors across services.
 
-Seedream belongs to the Bytedance catalog on RunAPI. The public model page is https://runapi.ai/models/seedream; variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the JavaScript, Ruby, and Go packages for this model.
+Seedream is available in the RunAPI model catalog. The public model page is https://runapi.ai/models/seedream; variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the JavaScript, Ruby, and Go packages for this model.
 
 ## Install
 
@@ -39,7 +39,7 @@ go get github.com/runapi-ai/seedream-sdk/go@latest
 - Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
 - Handle authentication, validation, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
 
-The JavaScript client exposes text to image resources, and the Ruby and Go packages mirror the same RunAPI task lifecycle.
+The JavaScript client exposes textToImage and editImage resources, and the Ruby and Go packages mirror the same RunAPI task lifecycle.
 
 ## JavaScript quick start
 
@@ -49,7 +49,11 @@ import { SeedreamClient } from '@runapi.ai/seedream';
 const client = new SeedreamClient();
 
 const task = await client.textToImage.create({
-  // Pass the Seedream request body documented at https://runapi.ai/docs#seedream.
+  model: 'seedream-v4-text-to-image',
+  prompt: 'A precise product render of a glass teapot on white marble',
+  aspect_ratio: '16:9',
+  output_resolution: '2k',
+  output_count: 3,
 });
 
 const status = await client.textToImage.get(task.id);
@@ -70,7 +74,6 @@ For short scripts, use `run` with the same JSON body to create the task and wait
 - Product docs: https://runapi.ai/docs#seedream
 - SDK repository: https://github.com/runapi-ai/seedream-sdk
 - Skill repository: https://github.com/runapi-ai/seedream
-- Provider comparison: https://runapi.ai/providers/bytedance
 - Full catalog: https://runapi.ai/models
 
 ## Pricing and variants
@@ -79,7 +82,9 @@ Use the most specific seedream api variant page for pricing, rate limits, and co
 - [4.5 text to image](https://runapi.ai/models/seedream/4.5-text-to-image)
 - [4.5 edit](https://runapi.ai/models/seedream/4.5-edit)
 - [5 lite text to image](https://runapi.ai/models/seedream/5-lite-text-to-image)
-- [5 lite image to image](https://runapi.ai/models/seedream/5-lite-image-to-image)
+- [5 lite edit](https://runapi.ai/models/seedream/5-lite-edit)
+- [v4 text to image](https://runapi.ai/models/seedream/v4-text-to-image)
+- [v4 edit](https://runapi.ai/models/seedream/v4-edit)
 
 Default pricing link for the seedream api SDK: https://runapi.ai/models/seedream/4.5-text-to-image
 
@@ -91,7 +96,7 @@ Install the model package for your language: `@runapi.ai/seedream`, `runapi-seed
 
 ### Where should public links point?
 
-Primary seedream api links point to https://runapi.ai/models/seedream. Pricing and usage-policy links point to variant pages such as https://runapi.ai/models/seedream/4.5-text-to-image. Provider comparisons point to https://runapi.ai/providers/bytedance, and broad browsing points to https://runapi.ai/models.
+Primary seedream api links point to https://runapi.ai/models/seedream. Pricing and usage-policy links point to variant pages such as https://runapi.ai/models/seedream/4.5-text-to-image, and broad browsing points to https://runapi.ai/models.
 
 ## License
 

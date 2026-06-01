@@ -3,6 +3,7 @@
 require "runapi/core"
 require_relative "seedream/types"
 require_relative "seedream/resources/text_to_image"
+require_relative "seedream/resources/edit_image"
 require_relative "seedream/client"
 
 module RunApi

@@ -5,10 +5,11 @@ require "runapi/seedream"
 client = RunApi::Seedream::Client.new(api_key: ENV.fetch("RUNAPI_API_KEY"))
 
 task = client.text_to_image.create(
-  model: "seedream-4.5-text-to-image",
-  prompt: "A cinematic portrait of a traveler in the rain",
+  model: "seedream-v4-text-to-image",
+  prompt: "A precise product render of a glass teapot on white marble",
   aspect_ratio: "16:9",
-  quality: "basic"
+  output_resolution: "2k",
+  output_count: 3
 )
 
 puts "Task ID: #{task.id}"

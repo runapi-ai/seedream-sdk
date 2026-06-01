@@ -3,12 +3,12 @@
 module RunApi
   module Seedream
     module Resources
-      class TextToImage
+      class EditImage
         include RunApi::Core::ResourceHelpers
 
-        ENDPOINT = "/api/v1/seedream/text_to_image"
-        RESPONSE_CLASS = Types::TextToImageResponse
-        COMPLETED_RESPONSE_CLASS = Types::CompletedTextToImageResponse
+        ENDPOINT = "/api/v1/seedream/edit_image"
+        RESPONSE_CLASS = Types::EditImageResponse
+        COMPLETED_RESPONSE_CLASS = Types::CompletedEditImageResponse
         PROMPT_MAX_LENGTH = 3000
         V4_PROMPT_MAX_LENGTH = 5000
         PROMPT_MIN_LENGTH_LITE = 3
@@ -38,8 +38,8 @@ module RunApi
         def validate_params!(params)
           model = param(params, :model)
           raise Core::ValidationError, "model is required" unless model
-          unless Types::TEXT_TO_IMAGE_MODELS.include?(model)
-            raise Core::ValidationError, "Invalid model: #{model}. Must be one of: #{Types::TEXT_TO_IMAGE_MODELS.join(", ")}"
+          unless Types::EDIT_MODELS.include?(model)
+            raise Core::ValidationError, "Invalid model: #{model}. Must be one of: #{Types::EDIT_MODELS.join(", ")}"
           end
 
           prompt = param(params, :prompt)
@@ -49,6 +49,8 @@ module RunApi
           if Types::LITE_MODELS.include?(model) && prompt.length < PROMPT_MIN_LENGTH_LITE
             raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{PROMPT_MAX_LENGTH} characters"
           end
+
+          raise Core::ValidationError, "source_image_urls is required" unless field_present?(params, :source_image_urls)
 
           if Types::V4_MODELS.include?(model)
             validate_optional!(params, :aspect_ratio, Types::ASPECT_RATIOS)
@@ -60,10 +62,6 @@ module RunApi
             validate_required!(params, :output_quality)
             validate_optional!(params, :aspect_ratio, Types::ASPECT_RATIOS)
             validate_optional!(params, :output_quality, Types::OUTPUT_QUALITIES)
-          end
-
-          if field_present?(params, :source_image_urls)
-            raise Core::ValidationError, "source_image_urls is not supported for #{model}"
           end
         end
 

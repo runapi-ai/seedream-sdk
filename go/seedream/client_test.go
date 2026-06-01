@@ -27,10 +27,10 @@ func TestTextToImageCreateSendsCorrectRequest(t *testing.T) {
 	stub := &stubHTTPClient{}
 	client := NewClientWithHTTP(stub)
 	_, err := client.TextToImage.Create(context.Background(), TextToImageParams{
-		Model:       Model45TextToImage,
-		Prompt:      "a cat",
-		AspectRatio: "16:9",
-		Quality:     "basic",
+		Model:         Model45TextToImage,
+		Prompt:        "a cat",
+		AspectRatio:   "16:9",
+		OutputQuality: "basic",
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -42,8 +42,11 @@ func TestTextToImageCreateSendsCorrectRequest(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected flat body map, got %T", stub.body)
 	}
-	if body["model"] != string(Model45TextToImage) || body["quality"] != "basic" {
+	if body["model"] != string(Model45TextToImage) || body["output_quality"] != "basic" {
 		t.Fatalf("unexpected body: %#v", body)
+	}
+	if _, ok := body["quality"]; ok {
+		t.Fatal("expected request body to omit quality")
 	}
 }
 
@@ -59,14 +62,69 @@ func TestTextToImageGetSendsCorrectPath(t *testing.T) {
 	}
 }
 
+func TestEditImageCreateSendsCorrectPath(t *testing.T) {
+	stub := &stubHTTPClient{}
+	client := NewClientWithHTTP(stub)
+	_, err := client.EditImage.Create(context.Background(), EditImageParams{
+		Model:           Model5LiteEdit,
+		Prompt:          "restyle",
+		SourceImageURLs: []string{"https://cdn.runapi.ai/public/samples/input.png"},
+		AspectRatio:     "1:1",
+		OutputQuality:   "high",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stub.method != "POST" || stub.path != "/api/v1/seedream/edit_image" {
+		t.Fatalf("unexpected request: %s %s", stub.method, stub.path)
+	}
+	body := stub.body.(map[string]any)
+	if body["model"] != string(Model5LiteEdit) || body["source_image_urls"].([]any)[0] != "https://cdn.runapi.ai/public/samples/input.png" {
+		t.Fatalf("unexpected edit body: %#v", body)
+	}
+}
+
+func TestTextToImageCreateSendsV4Fields(t *testing.T) {
+	stub := &stubHTTPClient{}
+	client := NewClientWithHTTP(stub)
+	outputCount := 3
+	seed := 12345
+	enableSafetyChecker := true
+	_, err := client.TextToImage.Create(context.Background(), TextToImageParams{
+		Model:               ModelV4TextToImage,
+		Prompt:              "a glass teapot product render",
+		AspectRatio:         "16:9",
+		OutputResolution:    "2k",
+		OutputCount:         &outputCount,
+		Seed:                &seed,
+		EnableSafetyChecker: &enableSafetyChecker,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := stub.body.(map[string]any)
+	if body["model"] != string(ModelV4TextToImage) || body["aspect_ratio"] != "16:9" || body["output_resolution"] != "2k" {
+		t.Fatalf("unexpected v4 body: %#v", body)
+	}
+	if body["output_count"] != float64(3) || body["seed"] != float64(12345) || body["enable_safety_checker"] != true {
+		t.Fatalf("unexpected v4 numeric/body fields: %#v", body)
+	}
+	if _, ok := body["image_size"]; ok {
+		t.Fatal("expected request body to omit image_size")
+	}
+	if _, ok := body["image_resolution"]; ok {
+		t.Fatal("expected request body to omit image_resolution")
+	}
+}
+
 func TestTextToImageCreateCompactsEmptyCallback(t *testing.T) {
 	stub := &stubHTTPClient{}
 	client := NewClientWithHTTP(stub)
 	_, err := client.TextToImage.Create(context.Background(), TextToImageParams{
-		Model:       Model5LiteT2I,
-		Prompt:      "a cat",
-		AspectRatio: "1:1",
-		Quality:     "high",
+		Model:         Model5LiteT2I,
+		Prompt:        "a cat",
+		AspectRatio:   "1:1",
+		OutputQuality: "high",
 	})
 	if err != nil {
 		t.Fatal(err)

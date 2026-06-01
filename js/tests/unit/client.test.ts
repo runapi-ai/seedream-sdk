@@ -39,4 +39,11 @@ describe('SeedreamClient', () => {
     expect(typeof client.textToImage.create).toBe('function');
     expect(typeof client.textToImage.get).toBe('function');
   });
+
+  it('exposes editImage resource', () => {
+    const client = new SeedreamClient({ apiKey: 'test-key' });
+    expect(typeof client.editImage.run).toBe('function');
+    expect(typeof client.editImage.create).toBe('function');
+    expect(typeof client.editImage.get).toBe('function');
+  });
 });
