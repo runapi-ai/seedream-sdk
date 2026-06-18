@@ -3,6 +3,9 @@
 module RunApi
   module Seedream
     module Resources
+      # Seedream image editing resource.
+      # Modifies source images according to a text prompt.
+      # V4 models accept up to 10 source images; 4.5 and 5-lite accept up to 14.
       class EditImage
         include RunApi::Core::ResourceHelpers
 

@@ -3,6 +3,9 @@
 module RunApi
   module Seedream
     module Resources
+      # Seedream text-to-image generation resource.
+      # Field requirements vary by model: 4.5/5-lite require aspect_ratio and
+      # output_quality; V4 uses output_resolution and supports seed/output_count.
       class TextToImage
         include RunApi::Core::ResourceHelpers
 

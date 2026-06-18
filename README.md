@@ -88,6 +88,10 @@ Use the most specific seedream api variant page for pricing, rate limits, and co
 
 Default pricing link for the seedream api SDK: https://runapi.ai/models/seedream/4.5-text-to-image
 
+## Generated file storage
+
+RunAPI-generated file URLs are temporary. Download and store generated images, videos, audio, or other files in your own durable storage within 7 days; do not treat returned URLs as long-term assets.
+
 ## FAQ
 
 ### Which package should I install for seedream api work?

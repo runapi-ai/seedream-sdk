@@ -2,6 +2,9 @@
 
 module RunApi
   module Seedream
+    # Seedream type constants and response models.
+    # Model families differ in supported params: 4.5/5-lite require aspect_ratio
+    # and output_quality; V4 uses output_resolution and supports seed/output_count.
     module Types
       MODELS = %w[
         seedream-4.5-text-to-image
