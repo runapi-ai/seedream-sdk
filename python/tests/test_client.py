@@ -103,7 +103,7 @@ def test_run_narrows_completed_type():
 
 def test_rejects_unknown_model():
     client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="Invalid model"):
+    with pytest.raises(ValidationError, match="model must be one of:"):
         client.text_to_image.create(model="nope", prompt="hi there")
 
 
@@ -115,7 +115,7 @@ def test_requires_prompt():
 
 def test_v4_output_count_range():
     client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="output_count must be between 1 and 6"):
+    with pytest.raises(ValidationError, match="output_count must be one of: 1, 2, 3, 4, 5, 6"):
         client.text_to_image.create(model="seedream-v4-text-to-image", prompt="hi there", output_count=9)
 
 

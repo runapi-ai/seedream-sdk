@@ -7,65 +7,105 @@
 </h3>
 
 <p align="center">
-  Seedream API SDKs for JavaScript, Ruby, and Go on RunAPI.
+  Seedream API SDKs for JavaScript, Python, Ruby, Go, and Java on RunAPI.
 </p>
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@runapi.ai/seedream)](https://www.npmjs.com/package/@runapi.ai/seedream)
+[![PyPI](https://img.shields.io/pypi/v/runapi-seedream)](https://pypi.org/project/runapi-seedream/)
 [![RubyGems](https://img.shields.io/gem/v/runapi-seedream)](https://rubygems.org/gems/runapi-seedream)
 [![Go Reference](https://pkg.go.dev/badge/github.com/runapi-ai/seedream-sdk/go.svg)](https://pkg.go.dev/github.com/runapi-ai/seedream-sdk/go)
+[![Maven Central](https://img.shields.io/maven-central/v/ai.runapi/runapi-seedream)](https://central.sonatype.com/artifact/ai.runapi/runapi-seedream)
 [![License](https://img.shields.io/github/license/runapi-ai/seedream-sdk)](https://github.com/runapi-ai/seedream-sdk/blob/main/LICENSE)
 
 </div>
 <br/>
 
-The seedream api SDK packages JavaScript, Ruby, and Go clients for Seedream on RunAPI. Use this seedream api SDK for v4, 4.5, and 5-lite text-to-image and editing workflows that need typed installs, JSON request bodies, task polling, and consistent RunAPI errors across services.
+The Seedream API SDK packages JavaScript, Python, Ruby, Go, and Java clients for Seedream on RunAPI. Use it for text-to-image and edit-image workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
 
-Seedream is available in the RunAPI model catalog. The public model page is https://runapi.ai/models/seedream; variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the JavaScript, Ruby, and Go packages for this model.
+Seedream is listed in the RunAPI model catalog at https://runapi.ai/models/seedream. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the language packages, examples, CI, and release tags for this model.
 
 ## Install
 
 ```bash
 npm install @runapi.ai/seedream
+pip install runapi-seedream
 gem install runapi-seedream
 go get github.com/runapi-ai/seedream-sdk/go@latest
 ```
 
-## What you can build
+Gradle:
 
-- Build creative tools, agent pipelines, and production integrations with the seedream api SDK.
-- Keep one model-specific repository while installing only the language package your app needs.
-- Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
-- Handle authentication, validation, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
-
-The JavaScript client exposes textToImage and editImage resources, and the Ruby and Go packages mirror the same RunAPI task lifecycle.
-
-## JavaScript quick start
-
-```typescript
-import { SeedreamClient } from '@runapi.ai/seedream';
-
-const client = new SeedreamClient();
-
-const task = await client.textToImage.create({
-  model: 'seedream-v4-text-to-image',
-  prompt: 'A precise product render of a glass teapot on white marble',
-  aspect_ratio: '16:9',
-  output_resolution: '2k',
-  output_count: 3,
-});
-
-const status = await client.textToImage.get(task.id);
+```kotlin
+dependencies {
+  implementation("ai.runapi:runapi-seedream:0.1.0")
+}
 ```
 
-For short scripts, use `run` with the same JSON body to create the task and wait for completion. For web request handlers, prefer `create` plus webhook or later `get` polling so the server does not hold a worker open.
+Maven:
+
+```xml
+<dependency>
+  <groupId>ai.runapi</groupId>
+  <artifactId>runapi-seedream</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+Use the Java BOM when installing multiple RunAPI Java modules:
+
+```kotlin
+dependencies {
+  implementation(platform("ai.runapi:runapi-bom:0.1.0"))
+  implementation("ai.runapi:runapi-seedream")
+}
+```
+
+## What you can build
+
+- Build apps, agent workflows, batch jobs, and production services around Seedream requests.
+- Install only the language package your app needs while keeping one model-specific repository for docs and releases.
+- Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
+- Upload local files, URL files, or base64 files through shared RunAPI file helpers.
+- Handle validation, authentication, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
+
+## Java quick start
+
+```java
+import ai.runapi.seedream.SeedreamClient;
+import ai.runapi.seedream.types.TextToImageParams;
+import ai.runapi.seedream.types.CompletedTextToImageResponse;
+import ai.runapi.seedream.types.TextToImageModel;
+
+SeedreamClient client = SeedreamClient.builder()
+    .apiKey(System.getenv("RUNAPI_API_KEY"))
+    .build();
+
+CompletedTextToImageResponse result = client.textToImage().run(
+    TextToImageParams.builder()
+        .model(TextToImageModel.SEEDREAM_4_5_TEXT_TO_IMAGE)
+        .aspectRatio("16:9")
+        .outputQuality("basic")
+        .prompt("A precise product render of a glass teapot on white marble")
+        .outputResolution("720p")
+        .build()
+);
+```
+
+Java packages target Java 8 bytecode and are tested on Java 8, 11, 17, and 21. Each model artifact depends on `ai.runapi:runapi-core`, so application code normally installs only `ai.runapi:runapi-seedream`.
+
+## Task lifecycle
+
+Most media endpoints are asynchronous. `create()` submits a task and returns its id, `get(id)` fetches the latest task state, and `run(params)` creates the task and polls until it reaches a terminal state. In web request handlers, prefer `create()` plus webhook or later `get()` polling so the server does not hold a worker open.
 
 ## Repository layout
 
 - `js/` publishes `@runapi.ai/seedream`.
-- `ruby/` publishes `runapi-seedream` when RubyGems publishing resumes.
-- `go/` publishes `github.com/runapi-ai/seedream-sdk/go` and depends on `github.com/runapi-ai/core-sdk/go`.
+- `python/` publishes `runapi-seedream`.
+- `ruby/` publishes `runapi-seedream`.
+- `go/` publishes `github.com/runapi-ai/seedream-sdk/go`.
+- `java/` publishes `ai.runapi:runapi-seedream` and uses `ai.runapi:runapi-core`.
 
 ## Public links
 
@@ -74,11 +114,12 @@ For short scripts, use `run` with the same JSON body to create the task and wait
 - Product docs: https://runapi.ai/docs#seedream
 - SDK repository: https://github.com/runapi-ai/seedream-sdk
 - Skill repository: https://github.com/runapi-ai/seedream
+- Provider comparison: https://runapi.ai/providers/bytedance
 - Full catalog: https://runapi.ai/models
 
 ## Pricing and variants
 
-Use the most specific seedream api variant page for pricing, rate limits, and commercial usage:
+Use the most specific Seedream variant page for pricing, rate limits, and commercial usage:
 - [4.5 text to image](https://runapi.ai/models/seedream/4.5-text-to-image)
 - [4.5 edit](https://runapi.ai/models/seedream/4.5-edit)
 - [5 lite text to image](https://runapi.ai/models/seedream/5-lite-text-to-image)
@@ -86,21 +127,21 @@ Use the most specific seedream api variant page for pricing, rate limits, and co
 - [v4 text to image](https://runapi.ai/models/seedream/v4-text-to-image)
 - [v4 edit](https://runapi.ai/models/seedream/v4-edit)
 
-Default pricing link for the seedream api SDK: https://runapi.ai/models/seedream/4.5-text-to-image
+Default pricing link for the Seedream SDK: https://runapi.ai/models/seedream/4.5-text-to-image
 
-## Generated file storage
+## File storage
 
 RunAPI-generated file URLs are temporary. Download and store generated images, videos, audio, or other files in your own durable storage within 7 days; do not treat returned URLs as long-term assets.
 
 ## FAQ
 
-### Which package should I install for seedream api work?
+### Which package should I install for Seedream work?
 
-Install the model package for your language: `@runapi.ai/seedream`, `runapi-seedream`, or `github.com/runapi-ai/seedream-sdk/go`. Install core SDK packages only when you are building shared SDK infrastructure.
+Install the model package for your language: `@runapi.ai/seedream` on npm, `runapi-seedream` on PyPI, `runapi-seedream` on RubyGems, `github.com/runapi-ai/seedream-sdk/go`, or `ai.runapi:runapi-seedream`. Install core SDK packages only when you are building shared SDK infrastructure.
 
 ### Where should public links point?
 
-Primary seedream api links point to https://runapi.ai/models/seedream. Pricing and usage-policy links point to variant pages such as https://runapi.ai/models/seedream/4.5-text-to-image, and broad browsing points to https://runapi.ai/models.
+Primary Seedream links point to https://runapi.ai/models/seedream. Pricing and usage-policy links point to variant pages such as https://runapi.ai/models/seedream/4.5-text-to-image. Provider comparisons point to https://runapi.ai/providers/bytedance, and broad browsing points to https://runapi.ai/models.
 
 ## License
 

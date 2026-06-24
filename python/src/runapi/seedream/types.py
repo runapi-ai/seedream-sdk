@@ -4,25 +4,11 @@ from __future__ import annotations
 
 from runapi.core import BaseModel, TaskResponse, optional, required
 
-MODELS = [
-    "seedream-4.5-text-to-image",
-    "seedream-4.5-edit",
-    "seedream-5-lite-text-to-image",
-    "seedream-5-lite-edit",
-    "seedream-v4-text-to-image",
-    "seedream-v4-edit",
-]
-TEXT_TO_IMAGE_MODELS = [
-    "seedream-4.5-text-to-image",
-    "seedream-5-lite-text-to-image",
-    "seedream-v4-text-to-image",
-]
-EDIT_MODELS = ["seedream-4.5-edit", "seedream-5-lite-edit", "seedream-v4-edit"]
+# Model groupings used by bespoke prompt-length selection (per-model rule the
+# contract cannot express). Model membership and field enums are validated by
+# the generated CONTRACT.
 LITE_MODELS = ["seedream-5-lite-text-to-image", "seedream-5-lite-edit"]
 V4_MODELS = ["seedream-v4-text-to-image", "seedream-v4-edit"]
-ASPECT_RATIOS = ["1:1", "4:3", "3:4", "16:9", "9:16", "2:3", "3:2", "21:9"]
-OUTPUT_QUALITIES = ["basic", "high"]
-V4_OUTPUT_RESOLUTIONS = ["1k", "2k", "4k"]
 
 
 class Image(BaseModel):

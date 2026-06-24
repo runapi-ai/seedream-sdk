@@ -1,6 +1,7 @@
-import type { HttpClient, RequestOptions, PollingOptions } from '@runapi.ai/core';
-import { compactParams } from '@runapi.ai/core';
+import type { HttpClient, RequestOptions, PollingOptions, ActionSchema } from '@runapi.ai/core';
+import { compactParams, validateParams } from '@runapi.ai/core';
 import { pollUntilComplete } from '@runapi.ai/core/internal';
+import { contract } from '../contract_gen';
 import type {
   CompletedEditImageResponse,
   EditImageParams,
@@ -39,8 +40,10 @@ export class EditImage {
    * @returns The task creation result.
    */
   async create(params: EditImageParams, options?: RequestOptions): Promise<TaskCreateResponse> {
+    const body = compactParams(params);
+    validateParams(contract['edit-image'] as ActionSchema, body as Record<string, unknown>);
     return this.http.request<TaskCreateResponse>('POST', ENDPOINT, {
-      body: compactParams(params),
+      body,
       ...options,
     });
   }
