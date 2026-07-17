@@ -1,8 +1,8 @@
-# Seedream API Python SDK for RunAPI
+# Seedream Python SDK for RunAPI
 
-The seedream api Python SDK is the language-specific package for Seedream on RunAPI. Use this seedream api package for text-to-image, image editing, and creative production flows when your application needs JSON request bodies, task status lookup, and consistent RunAPI errors in Python.
+The Seedream Python SDK is the language-specific package for Seedream on RunAPI. Use this package for image generation, image editing, and creative production workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in Python.
 
-This seedream api README is the Python package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs#seedream; for SDK docs, use https://runapi.ai/docs#sdk-seedream.
+This README is the Python package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs#seedream; for SDK docs, use https://runapi.ai/docs#sdk-seedream.
 
 ## Install
 
@@ -29,7 +29,7 @@ status = client.text_to_image.get(task.id)
 edit = client.edit_image.create(
     model="seedream-v4-edit",
     prompt="Make it golden hour",
-    source_image_urls=["https://example.com/source.jpg"],
+    source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"],
 )
 ```
 
@@ -49,7 +49,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Language notes
 
-Pass parameters as keyword arguments and catch the `runapi.seedream` error classes when building image jobs or scripts. The available resources are `text_to_image` for text models and `edit_image` for editing models. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Pass parameters as keyword arguments and catch the `runapi.seedream` error classes when building image jobs or scripts. The available resources are `text_to_image` and `edit_image`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

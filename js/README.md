@@ -1,8 +1,8 @@
-# Seedream API JavaScript SDK for RunAPI
+# Seedream JavaScript SDK for RunAPI
 
-The seedream api JavaScript SDK is the language-specific package for Seedream on RunAPI. Use this seedream api package for text-to-image, image editing, and creative production flows when your application needs JSON request bodies, task status lookup, and consistent RunAPI errors in JavaScript.
+The Seedream JavaScript SDK is the language-specific package for Seedream on RunAPI. Use this package for image generation, image editing, and creative production workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in JavaScript.
 
-This seedream api README is the JavaScript package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs#seedream; for SDK docs, use https://runapi.ai/docs#sdk-seedream.
+This README is the JavaScript package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs#seedream; for SDK docs, use https://runapi.ai/docs#sdk-seedream.
 
 ## Install
 

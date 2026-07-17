@@ -3,8 +3,8 @@
   "runapi": {
     "slug": "seedream"
   },
-  "version": "0.2.7",
-  "description": "RunAPI Seedream SDK for text-to-image and edit-image workflows in JavaScript, Python, Ruby, Go, and Java",
+  "version": "0.2.8",
+  "description": "RunAPI Seedream SDK for text-to-image and edit-image workflows in JavaScript, Python, Ruby, Go, Java, and PHP",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -31,7 +31,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@runapi.ai/core": "^0.2.6"
+    "@runapi.ai/core": "^0.2.11"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -50,10 +50,10 @@
     "api",
     "sdk",
     "typescript",
+    "python",
     "ruby",
     "golang",
     "java",
-    "python",
     "maven",
     "gradle",
     "image-generation",
@@ -67,5 +67,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/runapi-ai/seedream-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/runapi-ai/seedream-sdk/issues"
   }
 }

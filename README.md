@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  Seedream API SDKs for JavaScript, Python, Ruby, Go, and Java on RunAPI.
+  Seedream API SDKs for JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI.
 </p>
 
 <div align="center">
@@ -22,9 +22,9 @@
 </div>
 <br/>
 
-The Seedream API SDK packages JavaScript, Python, Ruby, Go, and Java clients for Seedream on RunAPI. Use it for text-to-image and edit-image workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
+The Seedream API SDK packages JavaScript, Python, Ruby, Go, Java, and PHP clients for Seedream on RunAPI. Use it for text-to-image and edit-image workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
 
-Seedream is listed in the RunAPI model catalog at https://runapi.ai/models/seedream. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the language packages, examples, CI, and release tags for this model.
+Seedream is listed in the RunAPI model catalog at https://runapi.ai/models/seedream. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `seedream-sdk` repository groups the non-PHP language packages, examples, CI, and release tags for this model. The PHP package is released from a split Composer repository.
 
 ## Install
 
@@ -61,6 +61,8 @@ dependencies {
   implementation("ai.runapi:runapi-seedream")
 }
 ```
+
+The PHP package is published from the split Composer repository as `runapi-ai/seedream`; see https://github.com/runapi-ai/seedream-php for PHP install and examples.
 
 ## What you can build
 
@@ -113,6 +115,7 @@ Most media endpoints are asynchronous. `create()` submits a task and returns its
 - SDK docs: https://runapi.ai/docs#sdk-seedream
 - Product docs: https://runapi.ai/docs#seedream
 - SDK repository: https://github.com/runapi-ai/seedream-sdk
+- PHP package repository: https://github.com/runapi-ai/seedream-php
 - Skill repository: https://github.com/runapi-ai/seedream
 - Provider comparison: https://runapi.ai/providers/bytedance
 - Full catalog: https://runapi.ai/models
@@ -137,7 +140,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ### Which package should I install for Seedream work?
 
-Install the model package for your language: `@runapi.ai/seedream` on npm, `runapi-seedream` on PyPI, `runapi-seedream` on RubyGems, `github.com/runapi-ai/seedream-sdk/go`, or `ai.runapi:runapi-seedream`. Install core SDK packages only when you are building shared SDK infrastructure.
+Install the model package for your language: `@runapi.ai/seedream` on npm, `runapi-seedream` on PyPI, `runapi-seedream` on RubyGems, `github.com/runapi-ai/seedream-sdk/go`, `ai.runapi:runapi-seedream` on Maven Central, or `runapi-ai/seedream` on Packagist. Install core SDK packages only when you are building shared SDK infrastructure.
 
 ### Where should public links point?
 
