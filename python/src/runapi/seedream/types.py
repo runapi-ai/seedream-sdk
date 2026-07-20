@@ -12,7 +12,6 @@ PRO_MODELS = ["seedream-5-pro-text-to-image", "seedream-5-pro-edit"]
 V4_MODELS = ["seedream-v4-text-to-image", "seedream-v4-edit"]
 LONG_PROMPT_MODELS = [*PRO_MODELS, *V4_MODELS]
 MINIMUM_THREE_PROMPT_MODELS = [*LITE_MODELS, *PRO_MODELS]
-TEN_SOURCE_IMAGE_MODELS = ["seedream-5-pro-edit", "seedream-v4-edit"]
 
 
 class Image(BaseModel):

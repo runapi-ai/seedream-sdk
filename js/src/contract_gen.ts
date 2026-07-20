@@ -35,7 +35,9 @@ export const contract = {
           "type": "integer"
         },
         "source_image_urls": {
-          "required": true
+          "required": true,
+          "min_items": 1,
+          "max_items": 14
         }
       },
       "seedream-5-lite-edit": {
@@ -72,7 +74,9 @@ export const contract = {
           "type": "integer"
         },
         "source_image_urls": {
-          "required": true
+          "required": true,
+          "min_items": 1,
+          "max_items": 14
         }
       },
       "seedream-5-pro-edit": {
@@ -109,7 +113,9 @@ export const contract = {
           "length": true
         },
         "source_image_urls": {
-          "required": true
+          "required": true,
+          "min_items": 1,
+          "max_items": 10
         }
       },
       "seedream-v4-edit": {
@@ -147,7 +153,9 @@ export const contract = {
           "type": "integer"
         },
         "source_image_urls": {
-          "required": true
+          "required": true,
+          "min_items": 1,
+          "max_items": 10
         }
       }
     },

@@ -10,7 +10,6 @@ from ..contract_gen import CONTRACT
 from ..types import (
     LONG_PROMPT_MODELS,
     MINIMUM_THREE_PROMPT_MODELS,
-    TEN_SOURCE_IMAGE_MODELS,
     V4_MODELS,
     CompletedEditImageResponse,
     EditImageResponse,
@@ -80,11 +79,6 @@ class EditImage(Resource):
             raise ValidationError(
                 f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {max_length} characters"
             )
-
-        source_image_urls = params.get("source_image_urls")
-        source_image_max = 10 if model in TEN_SOURCE_IMAGE_MODELS else 14
-        if isinstance(source_image_urls, list) and len(source_image_urls) > source_image_max:
-            raise ValidationError(f"source_image_urls accepts at most {source_image_max} images")
 
         if model in V4_MODELS:
             self._validate_integer(params, "seed")

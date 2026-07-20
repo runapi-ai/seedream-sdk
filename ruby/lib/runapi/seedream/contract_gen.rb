@@ -22,7 +22,9 @@ module RunApi
               "type" => "integer"
             },
             "source_image_urls" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 1,
+              "max_items" => 14
             }
           },
           "seedream-5-lite-edit" => {
@@ -44,7 +46,9 @@ module RunApi
               "type" => "integer"
             },
             "source_image_urls" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 1,
+              "max_items" => 14
             }
           },
           "seedream-5-pro-edit" => {
@@ -66,7 +70,9 @@ module RunApi
               "length" => true
             },
             "source_image_urls" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 1,
+              "max_items" => 10
             }
           },
           "seedream-v4-edit" => {
@@ -84,7 +90,9 @@ module RunApi
               "type" => "integer"
             },
             "source_image_urls" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 1,
+              "max_items" => 10
             }
           }
         },

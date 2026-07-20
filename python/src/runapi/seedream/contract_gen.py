@@ -18,7 +18,9 @@ CONTRACT = {
                     "type": "integer"
                 },
                 "source_image_urls": {
-                    "required": True
+                    "required": True,
+                    "min_items": 1,
+                    "max_items": 14
                 }
             },
             "seedream-5-lite-edit": {
@@ -40,7 +42,9 @@ CONTRACT = {
                     "type": "integer"
                 },
                 "source_image_urls": {
-                    "required": True
+                    "required": True,
+                    "min_items": 1,
+                    "max_items": 14
                 }
             },
             "seedream-5-pro-edit": {
@@ -62,7 +66,9 @@ CONTRACT = {
                     "length": True
                 },
                 "source_image_urls": {
-                    "required": True
+                    "required": True,
+                    "min_items": 1,
+                    "max_items": 10
                 }
             },
             "seedream-v4-edit": {
@@ -80,7 +86,9 @@ CONTRACT = {
                     "type": "integer"
                 },
                 "source_image_urls": {
-                    "required": True
+                    "required": True,
+                    "min_items": 1,
+                    "max_items": 10
                 }
             }
         },

@@ -145,7 +145,7 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
           aspect_ratio: "1:1",
           output_quality: "basic"
         )
-      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls accepts at most 10 images/)
+      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls must contain between 1 and 10 items/)
     end
   end
 

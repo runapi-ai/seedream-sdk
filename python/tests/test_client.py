@@ -199,7 +199,7 @@ def test_pro_prompt_allows_5000_characters():
 
 def test_pro_edit_rejects_more_than_ten_source_images():
     client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="source_image_urls accepts at most 10 images"):
+    with pytest.raises(ValidationError, match="source_image_urls must contain between 1 and 10 items"):
         client.edit_image.create(
             model="seedream-5-pro-edit",
             prompt="restyle this image",

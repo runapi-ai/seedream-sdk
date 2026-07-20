@@ -50,12 +50,6 @@ module RunApi
             raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{max_length} characters"
           end
 
-          source_image_urls = param(params, :source_image_urls)
-          source_image_max = Types::TEN_SOURCE_IMAGE_MODELS.include?(model) ? 10 : 14
-          if source_image_urls.is_a?(Array) && source_image_urls.length > source_image_max
-            raise Core::ValidationError, "source_image_urls accepts at most #{source_image_max} images"
-          end
-
           validate_integer!(params, :seed) if Types::V4_MODELS.include?(model)
         end
 

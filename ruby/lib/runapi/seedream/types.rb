@@ -15,7 +15,6 @@ module RunApi
       V4_MODELS = %w[seedream-v4-text-to-image seedream-v4-edit].freeze
       LONG_PROMPT_MODELS = (PRO_MODELS + V4_MODELS).freeze
       MINIMUM_THREE_PROMPT_MODELS = (LITE_MODELS + PRO_MODELS).freeze
-      TEN_SOURCE_IMAGE_MODELS = %w[seedream-5-pro-edit seedream-v4-edit].freeze
 
       class Image < RunApi::Core::BaseModel
         optional :url, String
