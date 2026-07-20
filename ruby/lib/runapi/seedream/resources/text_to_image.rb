@@ -4,8 +4,8 @@ module RunApi
   module Seedream
     module Resources
       # Seedream text-to-image generation resource.
-      # Field requirements vary by model: 4.5/5-lite require aspect_ratio and
-      # output_quality; V4 uses output_resolution and supports seed/output_count.
+      # Field requirements vary by model: 4.5/5-Lite/5 Pro require aspect_ratio
+      # and output_quality; V4 uses output_resolution and supports seed/output_count.
       class TextToImage
         include RunApi::Core::ResourceHelpers
 
@@ -44,10 +44,10 @@ module RunApi
 
           prompt = param(params, :prompt)
           raise Core::ValidationError, "prompt is required" unless prompt.is_a?(String) && !prompt.empty?
-          max_length = Types::V4_MODELS.include?(model) ? V4_PROMPT_MAX_LENGTH : PROMPT_MAX_LENGTH
+          max_length = Types::LONG_PROMPT_MODELS.include?(model) ? V4_PROMPT_MAX_LENGTH : PROMPT_MAX_LENGTH
           raise Core::ValidationError, "prompt must be at most #{max_length} characters" if prompt.length > max_length
-          if Types::LITE_MODELS.include?(model) && prompt.length < PROMPT_MIN_LENGTH_LITE
-            raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{PROMPT_MAX_LENGTH} characters"
+          if Types::MINIMUM_THREE_PROMPT_MODELS.include?(model) && prompt.length < PROMPT_MIN_LENGTH_LITE
+            raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{max_length} characters"
           end
 
           validate_integer!(params, :seed) if Types::V4_MODELS.include?(model)

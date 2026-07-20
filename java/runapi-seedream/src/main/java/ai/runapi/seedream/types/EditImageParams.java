@@ -10,6 +10,7 @@ public final class EditImageParams {
   private final String prompt;
   private final String aspectRatio;
   private final String outputQuality;
+  private final String outputFormat;
   private final List<String> sourceImageUrls;
   private final String outputResolution;
   private final Integer outputCount;
@@ -22,6 +23,7 @@ public final class EditImageParams {
     this.prompt = builder.prompt;
     this.aspectRatio = builder.aspectRatio;
     this.outputQuality = builder.outputQuality;
+    this.outputFormat = builder.outputFormat;
     this.sourceImageUrls = SeedreamParamUtils.requiredStrings(builder.sourceImageUrls, "sourceImageUrls");
     this.outputResolution = builder.outputResolution;
     this.outputCount = builder.outputCount;
@@ -47,6 +49,7 @@ public final class EditImageParams {
     raw.put("prompt", SeedreamParamUtils.wireValue(prompt));
     raw.put("aspect_ratio", SeedreamParamUtils.wireValue(aspectRatio));
     raw.put("output_quality", SeedreamParamUtils.wireValue(outputQuality));
+    raw.put("output_format", SeedreamParamUtils.wireValue(outputFormat));
     raw.put("source_image_urls", SeedreamParamUtils.wireValue(sourceImageUrls));
     raw.put("output_resolution", SeedreamParamUtils.wireValue(outputResolution));
     raw.put("output_count", SeedreamParamUtils.wireValue(outputCount));
@@ -64,6 +67,7 @@ public final class EditImageParams {
     private String prompt;
     private String aspectRatio;
     private String outputQuality;
+    private String outputFormat;
     private List<String> sourceImageUrls;
     private String outputResolution;
     private Integer outputCount;
@@ -101,6 +105,12 @@ public final class EditImageParams {
     /** Sets the output quality. */
     public Builder outputQuality(String value) {
       this.outputQuality = SeedreamParamUtils.requireNonBlank(value, "outputQuality");
+      return this;
+    }
+
+    /** Sets the output image format for Seedream 5 Lite and 5 Pro (default: png). */
+    public Builder outputFormat(String value) {
+      this.outputFormat = SeedreamParamUtils.requireNonBlank(value, "outputFormat");
       return this;
     }
 

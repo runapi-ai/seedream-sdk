@@ -10,6 +10,7 @@ public final class TextToImageParams {
   private final String prompt;
   private final String aspectRatio;
   private final String outputQuality;
+  private final String outputFormat;
   private final String outputResolution;
   private final Integer outputCount;
   private final Integer seed;
@@ -21,6 +22,7 @@ public final class TextToImageParams {
     this.prompt = builder.prompt;
     this.aspectRatio = builder.aspectRatio;
     this.outputQuality = builder.outputQuality;
+    this.outputFormat = builder.outputFormat;
     this.outputResolution = builder.outputResolution;
     this.outputCount = builder.outputCount;
     this.seed = builder.seed;
@@ -45,6 +47,7 @@ public final class TextToImageParams {
     raw.put("prompt", SeedreamParamUtils.wireValue(prompt));
     raw.put("aspect_ratio", SeedreamParamUtils.wireValue(aspectRatio));
     raw.put("output_quality", SeedreamParamUtils.wireValue(outputQuality));
+    raw.put("output_format", SeedreamParamUtils.wireValue(outputFormat));
     raw.put("output_resolution", SeedreamParamUtils.wireValue(outputResolution));
     raw.put("output_count", SeedreamParamUtils.wireValue(outputCount));
     raw.put("seed", SeedreamParamUtils.wireValue(seed));
@@ -61,6 +64,7 @@ public final class TextToImageParams {
     private String prompt;
     private String aspectRatio;
     private String outputQuality;
+    private String outputFormat;
     private String outputResolution;
     private Integer outputCount;
     private Integer seed;
@@ -97,6 +101,12 @@ public final class TextToImageParams {
     /** Sets the output quality. */
     public Builder outputQuality(String value) {
       this.outputQuality = SeedreamParamUtils.requireNonBlank(value, "outputQuality");
+      return this;
+    }
+
+    /** Sets the output image format for Seedream 5 Lite and 5 Pro (default: png). */
+    public Builder outputFormat(String value) {
+      this.outputFormat = SeedreamParamUtils.requireNonBlank(value, "outputFormat");
       return this;
     }
 

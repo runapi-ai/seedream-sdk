@@ -31,6 +31,14 @@ edit = client.edit_image.create(
     prompt="Make it golden hour",
     source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"],
 )
+
+lite = client.text_to_image.create(
+    model="seedream-5-lite-text-to-image",
+    prompt="A bright editorial photo of a modern bookstore cafe",
+    aspect_ratio="4:3",
+    output_quality="basic",
+    output_format="jpeg",
+)
 ```
 
 Use `create` to submit a task and return quickly, `get` to fetch the latest task state, and `run` when a script should create and poll until completion:
@@ -46,6 +54,10 @@ print(result.images[0].url)
 In web request handlers, prefer `create` plus webhook or later `get` polling so a worker is not held open.
 
 RunAPI-generated file URLs are temporary. Download and store generated images, videos, audio, or other files in your own durable storage within 7 days; do not treat returned URLs as long-term assets.
+
+## Seedream 5 Pro
+
+Use `seedream-5-pro-text-to-image` for generation and `seedream-5-pro-edit` for image editing. Both accept `output_quality`, optional `output_format`, and optional content safety checking; editing accepts up to 10 source image URLs.
 
 ## Language notes
 

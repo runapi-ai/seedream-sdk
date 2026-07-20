@@ -66,6 +66,55 @@ class SeedreamClientTest {
   }
 
   @Test
+  void createSendsLiteOutputFormat() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"task_lite\",\"status\":\"processing\"}");
+    SeedreamClient client = SeedreamClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.textToImage().create(
+        TextToImageParams.builder()
+            .model(TextToImageModel.SEEDREAM_5_LITE_TEXT_TO_IMAGE)
+            .prompt("A bright editorial photo of a modern bookstore cafe")
+            .aspectRatio("4:3")
+            .outputQuality("basic")
+            .outputFormat("jpeg")
+            .build()
+    );
+
+    JsonNode body = bodyJson(transport.request);
+    assertEquals("jpeg", body.get("output_format").asText());
+    assertEquals(false, body.has("outputFormat"));
+  }
+
+  @Test
+  void createSendsSeedream5ProModels() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"task_pro\",\"status\":\"processing\"}");
+    SeedreamClient client = SeedreamClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.textToImage().create(
+        TextToImageParams.builder()
+            .model(TextToImageModel.SEEDREAM_5_PRO_TEXT_TO_IMAGE)
+            .prompt("A photorealistic rooftop cafe at sunrise")
+            .aspectRatio("21:9")
+            .outputQuality("high")
+            .outputFormat("jpeg")
+            .build()
+    );
+    assertEquals("seedream-5-pro-text-to-image", bodyJson(transport.request).get("model").asText());
+
+    client.editImage().create(
+        EditImageParams.builder()
+            .model(EditImageModel.SEEDREAM_5_PRO_EDIT)
+            .prompt("Turn the material into transparent glass")
+            .sourceImageUrls(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg"))
+            .aspectRatio("3:2")
+            .outputQuality("basic")
+            .outputFormat("png")
+            .build()
+    );
+    assertEquals("seedream-5-pro-edit", bodyJson(transport.request).get("model").asText());
+  }
+
+  @Test
   void getDecodesTaskResponseAndExtraFields() {
     CapturingTransport transport = new CapturingTransport("{\"id\":\"task_456\",\"status\":\"completed\",\"images\":[{\"url\":\"https://file.runapi.ai/generated\"}],\"custom\":\"kept\"}");
     SeedreamClient client = SeedreamClient.builder().apiKey("sk-test").transport(transport).build();

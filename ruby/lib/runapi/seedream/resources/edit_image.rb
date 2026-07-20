@@ -5,7 +5,7 @@ module RunApi
     module Resources
       # Seedream image editing resource.
       # Modifies source images according to a text prompt.
-      # V4 models accept up to 10 source images; 4.5 and 5-lite accept up to 14.
+      # 5 Pro and V4 accept up to 10 source images; 4.5 and 5-Lite accept up to 14.
       class EditImage
         include RunApi::Core::ResourceHelpers
 
@@ -44,10 +44,16 @@ module RunApi
 
           prompt = param(params, :prompt)
           raise Core::ValidationError, "prompt is required" unless prompt.is_a?(String) && !prompt.empty?
-          max_length = Types::V4_MODELS.include?(model) ? V4_PROMPT_MAX_LENGTH : PROMPT_MAX_LENGTH
+          max_length = Types::LONG_PROMPT_MODELS.include?(model) ? V4_PROMPT_MAX_LENGTH : PROMPT_MAX_LENGTH
           raise Core::ValidationError, "prompt must be at most #{max_length} characters" if prompt.length > max_length
-          if Types::LITE_MODELS.include?(model) && prompt.length < PROMPT_MIN_LENGTH_LITE
-            raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{PROMPT_MAX_LENGTH} characters"
+          if Types::MINIMUM_THREE_PROMPT_MODELS.include?(model) && prompt.length < PROMPT_MIN_LENGTH_LITE
+            raise Core::ValidationError, "prompt must be between #{PROMPT_MIN_LENGTH_LITE} and #{max_length} characters"
+          end
+
+          source_image_urls = param(params, :source_image_urls)
+          source_image_max = Types::TEN_SOURCE_IMAGE_MODELS.include?(model) ? 10 : 14
+          if source_image_urls.is_a?(Array) && source_image_urls.length > source_image_max
+            raise Core::ValidationError, "source_image_urls accepts at most #{source_image_max} images"
           end
 
           validate_integer!(params, :seed) if Types::V4_MODELS.include?(model)

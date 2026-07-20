@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-seedream:0.1.1")
+  implementation("ai.runapi:runapi-seedream:0.1.2")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-seedream</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.1.7"))
+  implementation(platform("ai.runapi:runapi-bom:0.2.0"))
   implementation("ai.runapi:runapi-seedream")
 }
 ```
@@ -71,6 +71,38 @@ The PHP package is published from the split Composer repository as `runapi-ai/se
 - Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
 - Upload local files, URL files, or base64 files through shared RunAPI file helpers.
 - Handle validation, authentication, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
+
+## Seedream 5-Lite output format
+
+Both 5-Lite endpoints accept optional `output_format`: `png` (default) or `jpeg`.
+
+```typescript
+import { SeedreamClient } from '@runapi.ai/seedream';
+
+const client = new SeedreamClient();
+const task = await client.textToImage.create({
+  model: 'seedream-5-lite-text-to-image',
+  prompt: 'A bright editorial photo of a modern bookstore cafe',
+  aspect_ratio: '4:3',
+  output_quality: 'basic',
+  output_format: 'jpeg',
+});
+```
+
+## Seedream 5 Pro
+
+Seedream 5 Pro supports high-quality text-to-image and edit-image workflows with 1K or 2K output selected through `output_quality`.
+
+```typescript
+const result = await client.editImage.run({
+  model: 'seedream-5-pro-edit',
+  prompt: 'Turn the material into transparent glass',
+  source_image_urls: ['https://cdn.runapi.ai/public/samples/image.jpg'],
+  aspect_ratio: '3:2',
+  output_quality: 'high',
+  output_format: 'png',
+});
+```
 
 ## Java quick start
 
@@ -127,6 +159,8 @@ Use the most specific Seedream variant page for pricing, rate limits, and commer
 - [4.5 edit](https://runapi.ai/models/seedream/4.5-edit)
 - [5 lite text to image](https://runapi.ai/models/seedream/5-lite-text-to-image)
 - [5 lite edit](https://runapi.ai/models/seedream/5-lite-edit)
+- [5 pro text to image](https://runapi.ai/models/seedream/5-pro-text-to-image)
+- [5 pro edit](https://runapi.ai/models/seedream/5-pro-edit)
 - [v4 text to image](https://runapi.ai/models/seedream/v4-text-to-image)
 - [v4 edit](https://runapi.ai/models/seedream/v4-edit)
 

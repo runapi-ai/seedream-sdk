@@ -13,7 +13,7 @@ const ENDPOINT = '/api/v1/seedream/edit_image';
 
 /**
  * Modifies source images according to a text prompt.
- * V4 models accept up to 10 source images; 4.5 and 5-lite accept up to 14.
+ * 5 Pro and V4 accept up to 10 source images; 4.5 and 5-Lite accept up to 14.
  */
 export class EditImage {
   constructor(private readonly http: HttpClient) {}

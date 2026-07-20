@@ -8,7 +8,9 @@ from runapi.core import Resource, ValidationError, RequestOptions
 
 from ..contract_gen import CONTRACT
 from ..types import (
-    LITE_MODELS,
+    LONG_PROMPT_MODELS,
+    MINIMUM_THREE_PROMPT_MODELS,
+    TEN_SOURCE_IMAGE_MODELS,
     V4_MODELS,
     CompletedEditImageResponse,
     EditImageResponse,
@@ -71,13 +73,18 @@ class EditImage(Resource):
         prompt = params.get("prompt")
         if not (isinstance(prompt, str) and prompt):
             raise ValidationError("prompt is required")
-        max_length = self.V4_PROMPT_MAX_LENGTH if model in V4_MODELS else self.PROMPT_MAX_LENGTH
+        max_length = self.V4_PROMPT_MAX_LENGTH if model in LONG_PROMPT_MODELS else self.PROMPT_MAX_LENGTH
         if len(prompt) > max_length:
             raise ValidationError(f"prompt must be at most {max_length} characters")
-        if model in LITE_MODELS and len(prompt) < self.PROMPT_MIN_LENGTH_LITE:
+        if model in MINIMUM_THREE_PROMPT_MODELS and len(prompt) < self.PROMPT_MIN_LENGTH_LITE:
             raise ValidationError(
-                f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {self.PROMPT_MAX_LENGTH} characters"
+                f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {max_length} characters"
             )
+
+        source_image_urls = params.get("source_image_urls")
+        source_image_max = 10 if model in TEN_SOURCE_IMAGE_MODELS else 14
+        if isinstance(source_image_urls, list) and len(source_image_urls) > source_image_max:
+            raise ValidationError(f"source_image_urls accepts at most {source_image_max} images")
 
         if model in V4_MODELS:
             self._validate_integer(params, "seed")

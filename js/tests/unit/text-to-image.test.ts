@@ -47,6 +47,7 @@ describe('TextToImage', () => {
       source_image_urls: ['https://cdn.runapi.ai/public/samples/image.jpg'],
       aspect_ratio: '1:1',
       output_quality: 'high',
+      output_format: 'jpeg',
       enable_safety_checker: false,
     });
 
@@ -57,9 +58,78 @@ describe('TextToImage', () => {
         source_image_urls: ['https://cdn.runapi.ai/public/samples/image.jpg'],
         aspect_ratio: '1:1',
         output_quality: 'high',
+        output_format: 'jpeg',
         enable_safety_checker: false,
       },
     });
+  });
+
+  it('should send correct request for 5 pro text-to-image', async () => {
+    const mockResponse: TaskCreateResponse = { id: 'task-5-pro' };
+    vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
+
+    const textToImage = new TextToImage(mockHttp);
+    await textToImage.create({
+      model: 'seedream-5-pro-text-to-image',
+      prompt: 'A photorealistic rooftop cafe at sunrise',
+      aspect_ratio: '21:9',
+      output_quality: 'high',
+      output_format: 'jpeg',
+      enable_safety_checker: true,
+    });
+
+    expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/seedream/text_to_image', {
+      body: {
+        model: 'seedream-5-pro-text-to-image',
+        prompt: 'A photorealistic rooftop cafe at sunrise',
+        aspect_ratio: '21:9',
+        output_quality: 'high',
+        output_format: 'jpeg',
+        enable_safety_checker: true,
+      },
+    });
+  });
+
+  it('should send correct request for 5 pro edit', async () => {
+    const mockResponse: TaskCreateResponse = { id: 'task-5-pro-edit' };
+    vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
+
+    const editImage = new EditImage(mockHttp);
+    await editImage.create({
+      model: 'seedream-5-pro-edit',
+      prompt: 'Turn the material into transparent glass',
+      source_image_urls: ['https://cdn.runapi.ai/public/samples/image.jpg'],
+      aspect_ratio: '3:2',
+      output_quality: 'basic',
+      output_format: 'png',
+      enable_safety_checker: false,
+    });
+
+    expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/seedream/edit_image', {
+      body: {
+        model: 'seedream-5-pro-edit',
+        prompt: 'Turn the material into transparent glass',
+        source_image_urls: ['https://cdn.runapi.ai/public/samples/image.jpg'],
+        aspect_ratio: '3:2',
+        output_quality: 'basic',
+        output_format: 'png',
+        enable_safety_checker: false,
+      },
+    });
+  });
+
+  it('should reject v4-only output controls for 5 pro models', async () => {
+    const textToImage = new TextToImage(mockHttp);
+
+    await expect(textToImage.create({
+      model: 'seedream-5-pro-text-to-image',
+      prompt: 'A photorealistic rooftop cafe at sunrise',
+      aspect_ratio: '21:9',
+      output_quality: 'high',
+      output_resolution: '2k',
+    } as any)).rejects.toThrow(/output_resolution is not allowed/);
+
+    expect(mockHttp.request).not.toHaveBeenCalled();
   });
 
   it('should send correct request for v4 text-to-image', async () => {

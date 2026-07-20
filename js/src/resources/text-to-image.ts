@@ -13,8 +13,9 @@ const ENDPOINT = '/api/v1/seedream/text_to_image';
 
 /**
  * Generates images from text prompts across Seedream model versions.
- * Field requirements vary by model family: 4.5/5-lite require `aspect_ratio`
- * and `output_quality`; V4 uses `output_resolution` and supports `seed`/`output_count`.
+ * Field requirements vary by model family: 4.5/5-Lite/5 Pro require
+ * `aspect_ratio` and `output_quality`; V4 uses `output_resolution` and supports
+ * `seed`/`output_count`.
  */
 export class TextToImage {
   constructor(private readonly http: HttpClient) {}

@@ -8,7 +8,8 @@ from runapi.core import Resource, ValidationError, RequestOptions
 
 from ..contract_gen import CONTRACT
 from ..types import (
-    LITE_MODELS,
+    LONG_PROMPT_MODELS,
+    MINIMUM_THREE_PROMPT_MODELS,
     V4_MODELS,
     CompletedTextToImageResponse,
     TextToImageResponse,
@@ -71,12 +72,12 @@ class TextToImage(Resource):
         prompt = params.get("prompt")
         if not (isinstance(prompt, str) and prompt):
             raise ValidationError("prompt is required")
-        max_length = self.V4_PROMPT_MAX_LENGTH if model in V4_MODELS else self.PROMPT_MAX_LENGTH
+        max_length = self.V4_PROMPT_MAX_LENGTH if model in LONG_PROMPT_MODELS else self.PROMPT_MAX_LENGTH
         if len(prompt) > max_length:
             raise ValidationError(f"prompt must be at most {max_length} characters")
-        if model in LITE_MODELS and len(prompt) < self.PROMPT_MIN_LENGTH_LITE:
+        if model in MINIMUM_THREE_PROMPT_MODELS and len(prompt) < self.PROMPT_MIN_LENGTH_LITE:
             raise ValidationError(
-                f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {self.PROMPT_MAX_LENGTH} characters"
+                f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {max_length} characters"
             )
 
         if model in V4_MODELS:

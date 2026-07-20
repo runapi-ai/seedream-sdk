@@ -71,6 +71,7 @@ func TestEditImageCreateSendsCorrectPath(t *testing.T) {
 		SourceImageURLs: []string{"https://cdn.runapi.ai/public/samples/input.png"},
 		AspectRatio:     "1:1",
 		OutputQuality:   "high",
+		OutputFormat:    "jpeg",
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -81,6 +82,44 @@ func TestEditImageCreateSendsCorrectPath(t *testing.T) {
 	body := stub.body.(map[string]any)
 	if body["model"] != string(Model5LiteEdit) || body["source_image_urls"].([]any)[0] != "https://cdn.runapi.ai/public/samples/input.png" {
 		t.Fatalf("unexpected edit body: %#v", body)
+	}
+	if body["output_format"] != "jpeg" {
+		t.Fatalf("unexpected output_format: %#v", body)
+	}
+}
+
+func TestSeedream5ProRequestsUsePublicModelIDs(t *testing.T) {
+	stub := &stubHTTPClient{}
+	client := NewClientWithHTTP(stub)
+	_, err := client.TextToImage.Create(context.Background(), TextToImageParams{
+		Model:         Model5ProT2I,
+		Prompt:        "a photorealistic rooftop cafe at sunrise",
+		AspectRatio:   "21:9",
+		OutputQuality: "high",
+		OutputFormat:  "jpeg",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := stub.body.(map[string]any)
+	if body["model"] != string(Model5ProT2I) || body["output_format"] != "jpeg" {
+		t.Fatalf("unexpected 5 Pro text body: %#v", body)
+	}
+
+	_, err = client.EditImage.Create(context.Background(), EditImageParams{
+		Model:           Model5ProEdit,
+		Prompt:          "turn the material into transparent glass",
+		SourceImageURLs: []string{"https://cdn.runapi.ai/public/samples/image.jpg"},
+		AspectRatio:     "3:2",
+		OutputQuality:   "basic",
+		OutputFormat:    "png",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	body = stub.body.(map[string]any)
+	if body["model"] != string(Model5ProEdit) || body["source_image_urls"] == nil {
+		t.Fatalf("unexpected 5 Pro edit body: %#v", body)
 	}
 }
 

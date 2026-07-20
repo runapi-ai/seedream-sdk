@@ -20,11 +20,25 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
     end
 
     it "POSTs with source_image_urls for image models" do
-      params = {model: "seedream-5-lite-edit", prompt: "restyle", source_image_urls: ["https://cdn.runapi.ai/public/samples/input.png"], aspect_ratio: "1:1", output_quality: "high", enable_safety_checker: false}
+      params = {model: "seedream-5-lite-edit", prompt: "restyle", source_image_urls: ["https://cdn.runapi.ai/public/samples/input.png"], aspect_ratio: "1:1", output_quality: "high", output_format: "jpeg", enable_safety_checker: false}
       expect(http).to receive(:request).with(:post, edit_endpoint, body: params).and_return("id" => "task-2")
 
       result = edit_image.create(**params)
       expect(result.id).to eq("task-2")
+    end
+
+    it "POSTs 5 Pro edit params" do
+      params = {
+        model: "seedream-5-pro-edit",
+        prompt: "turn the material into transparent glass",
+        source_image_urls: ["https://cdn.runapi.ai/public/samples/image.jpg"],
+        aspect_ratio: "3:2",
+        output_quality: "basic",
+        output_format: "png"
+      }
+      expect(http).to receive(:request).with(:post, edit_endpoint, body: params).and_return("id" => "task-5-pro")
+
+      expect(edit_image.create(**params).id).to eq("task-5-pro")
     end
 
     it "POSTs v4 text-to-image params" do
@@ -107,6 +121,31 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
       expect {
         text_to_image.create(model: "seedream-5-lite-text-to-image", prompt: "hi", aspect_ratio: "1:1", output_quality: "basic")
       }.to raise_error(RunApi::Core::ValidationError, /prompt must be between 3 and 3000 characters/)
+    end
+
+    it "raises ValidationError for invalid 5-lite output_format" do
+      expect {
+        text_to_image.create(model: "seedream-5-lite-text-to-image", prompt: "test", aspect_ratio: "1:1", output_quality: "basic", output_format: "webp")
+      }.to raise_error(RunApi::Core::ValidationError, /output_format must be one of: png, jpeg/)
+    end
+
+    it "allows 5 Pro prompts up to 5000 characters" do
+      params = {model: "seedream-5-pro-text-to-image", prompt: "x" * 5000, aspect_ratio: "1:1", output_quality: "basic"}
+      expect(http).to receive(:request).with(:post, endpoint, body: params).and_return("id" => "task-long-pro")
+
+      expect(text_to_image.create(**params).id).to eq("task-long-pro")
+    end
+
+    it "rejects more than ten source images for 5 Pro edit" do
+      expect {
+        edit_image.create(
+          model: "seedream-5-pro-edit",
+          prompt: "restyle",
+          source_image_urls: Array.new(11, "https://cdn.runapi.ai/public/samples/image.jpg"),
+          aspect_ratio: "1:1",
+          output_quality: "basic"
+        )
+      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls accepts at most 10 images/)
     end
   end
 

@@ -16,7 +16,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-seedream:0.1.1")
+  implementation("ai.runapi:runapi-seedream:0.1.2")
 }
 ```
 
@@ -26,7 +26,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-seedream</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ Use the BOM when multiple RunAPI Java modules are installed:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.1.7"))
+  implementation(platform("ai.runapi:runapi-bom:0.2.0"))
   implementation("ai.runapi:runapi-seedream")
 }
 ```
@@ -47,7 +47,7 @@ Maven BOM:
     <dependency>
       <groupId>ai.runapi</groupId>
       <artifactId>runapi-bom</artifactId>
-      <version>0.1.7</version>
+      <version>0.2.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -79,6 +79,10 @@ CompletedTextToImageResponse result = client.textToImage().run(
 ```
 
 The client builder reads `RUNAPI_API_KEY` when `.apiKey(...)` is omitted. Set `RUNAPI_BASE_URL` or `.baseUrl(...)` only when using a non-default RunAPI endpoint.
+
+## Seedream 5 Pro
+
+Use `TextToImageModel.SEEDREAM_5_PRO_TEXT_TO_IMAGE` for generation and `EditImageModel.SEEDREAM_5_PRO_EDIT` for image editing. Both accept output quality, optional output format, and optional content safety checking; editing accepts up to 10 source image URLs.
 
 ## Task Lifecycle
 

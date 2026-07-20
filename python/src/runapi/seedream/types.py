@@ -1,4 +1,4 @@
-"""Seedream model lists, enums, and response models."""
+"""Seedream model groups and responses; request enums come from CONTRACT."""
 
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from runapi.core import BaseModel, TaskResponse, optional, required
 # contract cannot express). Model membership and field enums are validated by
 # the generated CONTRACT.
 LITE_MODELS = ["seedream-5-lite-text-to-image", "seedream-5-lite-edit"]
+PRO_MODELS = ["seedream-5-pro-text-to-image", "seedream-5-pro-edit"]
 V4_MODELS = ["seedream-v4-text-to-image", "seedream-v4-edit"]
+LONG_PROMPT_MODELS = [*PRO_MODELS, *V4_MODELS]
+MINIMUM_THREE_PROMPT_MODELS = [*LITE_MODELS, *PRO_MODELS]
+TEN_SOURCE_IMAGE_MODELS = ["seedream-5-pro-edit", "seedream-v4-edit"]
 
 
 class Image(BaseModel):

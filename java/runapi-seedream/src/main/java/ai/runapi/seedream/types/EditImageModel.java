@@ -8,6 +8,8 @@ public final class EditImageModel extends SeedreamValue {
   public static final EditImageModel SEEDREAM_4_5_EDIT = new EditImageModel("seedream-4.5-edit");
   /** seedream-5-lite-edit model slug. */
   public static final EditImageModel SEEDREAM_5_LITE_EDIT = new EditImageModel("seedream-5-lite-edit");
+  /** seedream-5-pro-edit model slug. */
+  public static final EditImageModel SEEDREAM_5_PRO_EDIT = new EditImageModel("seedream-5-pro-edit");
   /** seedream-v4-edit model slug. */
   public static final EditImageModel SEEDREAM_V4_EDIT = new EditImageModel("seedream-v4-edit");
 

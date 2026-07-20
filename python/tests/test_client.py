@@ -80,6 +80,48 @@ def test_create_posts_compacted_body():
     assert isinstance(result, TextToImageResponse)
 
 
+def test_lite_output_format_is_forwarded():
+    fake = FakeHttp({"id": "t-lite", "status": "pending"})
+    client = SeedreamClient(api_key="k", http_client=fake)
+    client.edit_image.create(
+        model="seedream-5-lite-edit",
+        prompt="restyle this image",
+        source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"],
+        aspect_ratio="1:1",
+        output_quality="high",
+        output_format="jpeg",
+    )
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/seedream/edit_image",
+            {
+                "model": "seedream-5-lite-edit",
+                "prompt": "restyle this image",
+                "source_image_urls": ["https://cdn.runapi.ai/public/samples/image.jpg"],
+                "aspect_ratio": "1:1",
+                "output_quality": "high",
+                "output_format": "jpeg",
+            },
+        ),
+    ]
+
+
+def test_pro_edit_is_forwarded():
+    fake = FakeHttp({"id": "t-pro", "status": "pending"})
+    client = SeedreamClient(api_key="k", http_client=fake)
+    client.edit_image.create(
+        model="seedream-5-pro-edit",
+        prompt="Turn the material into transparent glass",
+        source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"],
+        aspect_ratio="3:2",
+        output_quality="basic",
+        output_format="png",
+    )
+    assert fake.calls[0][2]["model"] == "seedream-5-pro-edit"
+    assert fake.calls[0][2]["output_format"] == "png"
+
+
 def test_get_fetches_by_id():
     fake = FakeHttp({"id": "t1", "status": "processing"})
     client = SeedreamClient(api_key="k", http_client=fake)
@@ -143,3 +185,37 @@ def test_lite_prompt_min_length():
     client = SeedreamClient(api_key="k", http_client=FakeHttp())
     with pytest.raises(ValidationError, match="between 3 and 3000"):
         client.text_to_image.create(model="seedream-5-lite-text-to-image", prompt="hi", aspect_ratio="1:1", output_quality="high")
+
+
+def test_pro_prompt_allows_5000_characters():
+    client = SeedreamClient(api_key="k", http_client=FakeHttp())
+    client.text_to_image.create(
+        model="seedream-5-pro-text-to-image",
+        prompt="x" * 5000,
+        aspect_ratio="1:1",
+        output_quality="high",
+    )
+
+
+def test_pro_edit_rejects_more_than_ten_source_images():
+    client = SeedreamClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="source_image_urls accepts at most 10 images"):
+        client.edit_image.create(
+            model="seedream-5-pro-edit",
+            prompt="restyle this image",
+            source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"] * 11,
+            aspect_ratio="1:1",
+            output_quality="high",
+        )
+
+
+def test_lite_output_format_enum():
+    client = SeedreamClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="output_format must be one of: png, jpeg"):
+        client.text_to_image.create(
+            model="seedream-5-lite-text-to-image",
+            prompt="hi there",
+            aspect_ratio="1:1",
+            output_quality="high",
+            output_format="webp",
+        )

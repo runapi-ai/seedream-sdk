@@ -106,5 +106,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 - [4.5 edit](https://runapi.ai/models/seedream/4.5-edit.md)
 - [5 lite text to image](https://runapi.ai/models/seedream/5-lite-text-to-image.md)
 - [5 lite edit](https://runapi.ai/models/seedream/5-lite-edit.md)
+- [5 pro text to image](https://runapi.ai/models/seedream/5-pro-text-to-image.md)
+- [5 pro edit](https://runapi.ai/models/seedream/5-pro-edit.md)
 - [v4 text to image](https://runapi.ai/models/seedream/v4-text-to-image.md)
 - [v4 edit](https://runapi.ai/models/seedream/v4-edit.md)
