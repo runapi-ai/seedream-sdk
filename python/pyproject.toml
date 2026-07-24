@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "runapi-seedream"
-version = "0.1.2"
+version = "0.2.0"
 description = "RunAPI Seedream SDK for text-to-image and edit-image workflows in JavaScript, Python, Ruby, Go, Java, and PHP"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
 authors = [{ name = "RunAPI", email = "contact@runapi.ai" }]
 keywords = ["runapi", "runapi-ai", "seedream", "api", "sdk", "typescript", "python", "ruby", "golang", "java", "maven", "gradle", "image-generation", "text-to-image", "image-api", "seedream-api"]
-dependencies = ["runapi-core>=0.2.1"]
+dependencies = ["runapi-core>=0.3.0"]
 
 [project.urls]
 Homepage = "https://runapi.ai/models/seedream"
@@ -19,7 +19,7 @@ Documentation = "https://runapi.ai/docs#sdk-seedream"
 Source = "https://github.com/runapi-ai/seedream-sdk"
 Issues = "https://github.com/runapi-ai/seedream-sdk/issues"
 Changelog = "https://github.com/runapi-ai/seedream-sdk/blob/main/CHANGELOG.md"
-"Release Notes" = "https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.1.2"
+"Release Notes" = "https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.2.0"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/runapi"]
