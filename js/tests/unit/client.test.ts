@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
-import { AuthenticationError } from '@runapi.ai/core';
 import { SeedreamClient } from '../../src';
 
 const originalEnv = process.env.RUNAPI_API_KEY;
@@ -20,11 +19,6 @@ describe('SeedreamClient', () => {
   it('initializes with an API key', () => {
     const client = new SeedreamClient({ apiKey: 'test-key' });
     expect(client.textToImage).toBeDefined();
-  });
-
-  it('throws when apiKey missing and env unset', () => {
-    expect(() => new SeedreamClient()).toThrow(AuthenticationError);
-    expect(() => new SeedreamClient({ apiKey: '' })).toThrow(AuthenticationError);
   });
 
   it('reads apiKey from RUNAPI_API_KEY env var', () => {

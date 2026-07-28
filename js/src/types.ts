@@ -1,4 +1,4 @@
-import type { AsyncTaskStatus } from '@runapi.ai/core';
+import type { AsyncTaskStatus, TaskBillingResponse, TaskResponse } from '@runapi.ai/core';
 
 /** Union of all Seedream model identifiers across text-to-image and edit endpoints. */
 export type SeedreamModel =
@@ -125,7 +125,7 @@ export type EditImageParams =
   | Generation5ProEditParams
   | GenerationV4EditParams;
 
-export interface TaskCreateResponse {
+export interface TaskCreateResponse extends TaskBillingResponse {
   id: string;
 }
 
@@ -134,7 +134,7 @@ export interface Image {
   url: string;
 }
 
-export interface TextToImageResponse {
+export interface TextToImageResponse extends TaskResponse {
   id: string;
   status: AsyncTaskStatus;
   images?: Image[];
