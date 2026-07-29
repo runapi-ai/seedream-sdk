@@ -2,7 +2,7 @@
 
 The Seedream Python SDK is the language-specific package for Seedream on RunAPI. Use this package for image generation, image editing, and creative production workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in Python.
 
-This README is the Python package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs#seedream; for SDK docs, use https://runapi.ai/docs#sdk-seedream.
+This README is the Python package guide inside the public `seedream-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/seedream; for API reference, use https://runapi.ai/docs/api/seedream/text-to-image; for SDK docs, use https://runapi.ai/docs/resources/sdks.
 
 ## Install
 
@@ -66,8 +66,8 @@ Pass parameters as keyword arguments and catch the `runapi.seedream` error class
 ## Links
 
 - Model page: https://runapi.ai/models/seedream
-- SDK docs: https://runapi.ai/docs#sdk-seedream
-- Product docs: https://runapi.ai/docs#seedream
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/seedream/text-to-image
 - Pricing and rate limits: https://runapi.ai/models/seedream/v4-text-to-image
 - Full catalog: https://runapi.ai/models
 - Repository: https://github.com/runapi-ai/seedream-sdk

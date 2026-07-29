@@ -144,8 +144,8 @@ Most media endpoints are asynchronous. `create()` submits a task and returns its
 ## Public links
 
 - Model page: https://runapi.ai/models/seedream
-- SDK docs: https://runapi.ai/docs#sdk-seedream
-- Product docs: https://runapi.ai/docs#seedream
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/seedream/text-to-image
 - SDK repository: https://github.com/runapi-ai/seedream-sdk
 - PHP package repository: https://github.com/runapi-ai/seedream-php
 - Skill repository: https://github.com/runapi-ai/seedream

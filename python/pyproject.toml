@@ -15,7 +15,7 @@ dependencies = ["runapi-core>=0.3.1"]
 
 [project.urls]
 Homepage = "https://runapi.ai/models/seedream"
-Documentation = "https://runapi.ai/docs#sdk-seedream"
+Documentation = "https://runapi.ai/docs/resources/sdks"
 Source = "https://github.com/runapi-ai/seedream-sdk"
 Issues = "https://github.com/runapi-ai/seedream-sdk/issues"
 Changelog = "https://github.com/runapi-ai/seedream-sdk/blob/main/CHANGELOG.md"
