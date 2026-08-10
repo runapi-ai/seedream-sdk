@@ -66,7 +66,8 @@ export const contract = {
         "output_quality": {
           "enum": [
             "basic",
-            "high"
+            "high",
+            "ultra"
           ],
           "required": true
         },
@@ -250,7 +251,8 @@ export const contract = {
         "output_quality": {
           "enum": [
             "basic",
-            "high"
+            "high",
+            "ultra"
           ],
           "required": true
         },

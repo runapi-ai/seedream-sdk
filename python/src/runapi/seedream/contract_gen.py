@@ -35,7 +35,7 @@ CONTRACT = {
                     "enum": ["png", "jpeg"]
                 },
                 "output_quality": {
-                    "enum": ["basic", "high"],
+                    "enum": ["basic", "high", "ultra"],
                     "required": True
                 },
                 "seed": {
@@ -140,7 +140,7 @@ CONTRACT = {
                     "enum": ["png", "jpeg"]
                 },
                 "output_quality": {
-                    "enum": ["basic", "high"],
+                    "enum": ["basic", "high", "ultra"],
                     "required": True
                 },
                 "seed": {

@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.2.12](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.2.12), [ruby/v0.2.11](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.2.11), [go/v0.2.12](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.2.12), [python/v0.2.2](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.2.2) - 2026-08-10
+
+### Changed
+- Accept basic, high, and ultra output quality values for Seedream 5 Lite generation and editing requests.
+
+
 ## [python/v0.2.1](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.2.1) - 2026-07-29
 
 ### Fixed

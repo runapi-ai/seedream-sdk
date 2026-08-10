@@ -39,7 +39,7 @@ module RunApi
               "enum" => ["png", "jpeg"]
             },
             "output_quality" => {
-              "enum" => ["basic", "high"],
+              "enum" => ["basic", "high", "ultra"],
               "required" => true
             },
             "seed" => {
@@ -144,7 +144,7 @@ module RunApi
               "enum" => ["png", "jpeg"]
             },
             "output_quality" => {
-              "enum" => ["basic", "high"],
+              "enum" => ["basic", "high", "ultra"],
               "required" => true
             },
             "seed" => {
