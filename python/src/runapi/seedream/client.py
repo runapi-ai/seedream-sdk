@@ -7,6 +7,7 @@ from typing import Any, Optional
 from runapi.core import ProviderClient
 
 from .resources.edit_image import EditImage
+from .resources.decompose_layers import DecomposeLayers
 from .resources.text_to_image import TextToImage
 
 
@@ -26,3 +27,4 @@ class SeedreamClient(ProviderClient):
         http = self._http
         self.text_to_image = TextToImage(http)
         self.edit_image = EditImage(http)
+        self.decompose_layers = DecomposeLayers(http)

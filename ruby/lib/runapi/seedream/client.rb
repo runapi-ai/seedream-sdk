@@ -29,11 +29,14 @@ module RunApi
       attr_reader :text_to_image
       # @return [Resources::EditImage] Edit source images with a text prompt.
       attr_reader :edit_image
+      # @return [Resources::DecomposeLayers] Separate an image into editable layers.
+      attr_reader :decompose_layers
 
       def initialize(api_key: nil, **options)
         super
         @text_to_image = Resources::TextToImage.new(http)
         @edit_image = Resources::EditImage.new(http)
+        @decompose_layers = Resources::DecomposeLayers.new(http)
       end
     end
   end

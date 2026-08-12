@@ -37,3 +37,20 @@ class CompletedTextToImageResponse(TextToImageResponse):
 
 
 CompletedEditImageResponse = CompletedTextToImageResponse
+
+
+class DecomposeLayersResponse(TaskResponse):
+    """Seedream layer decomposition task status response."""
+
+    id = required(str)
+    status = optional(str, enum=lambda: TaskResponse.Status.ALL)
+    base_image = optional(lambda: Image)
+    layers = optional([lambda: Image])
+    error = optional(str)
+
+
+class CompletedDecomposeLayersResponse(DecomposeLayersResponse):
+    """Narrowed response once layer decomposition completes."""
+
+    base_image = required(lambda: Image)
+    layers = required([lambda: Image])

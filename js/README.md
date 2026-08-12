@@ -32,11 +32,11 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Seedream 5 Pro
 
-Use `seedream-5-pro-text-to-image` for generation and `seedream-5-pro-edit` for image editing. Both accept `output_quality`, optional `output_format`, and optional content safety checking; editing accepts up to 10 source image URLs.
+Use `seedream-5-pro-text-to-image` for generation, `seedream-5-pro-edit` for image editing, and `seedream-5-pro-layer-decomposition` to separate one image into a base image and ordered transparent layers.
 
 ## Language notes
 
-Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building image applications. The package exposes `textToImage` for text models and `editImage` for editing models. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building image applications. The package exposes `textToImage`, `editImage`, and `decomposeLayers`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

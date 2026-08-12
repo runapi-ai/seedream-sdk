@@ -8,6 +8,7 @@ export type SeedreamModel =
   | 'seedream-5-lite-edit'
   | 'seedream-5-pro-text-to-image'
   | 'seedream-5-pro-edit'
+  | 'seedream-5-pro-layer-decomposition'
   | 'seedream-v4-text-to-image'
   | 'seedream-v4-edit';
 
@@ -24,6 +25,8 @@ export type EditImageModel =
   | 'seedream-5-lite-edit'
   | 'seedream-5-pro-edit'
   | 'seedream-v4-edit';
+
+export type DecomposeLayersModel = 'seedream-5-pro-layer-decomposition';
 
 export type AspectRatio = '1:1' | '4:3' | '3:4' | '16:9' | '9:16' | '2:3' | '3:2' | '21:9';
 /** Quality preset for 4.5, 5-Lite, and 5 Pro models. */
@@ -125,6 +128,15 @@ export type EditImageParams =
   | Generation5ProEditParams
   | GenerationV4EditParams;
 
+export interface DecomposeLayersParams {
+  model: DecomposeLayersModel;
+  image_url: string;
+  prompt?: string;
+  size?: 'auto' | '1K' | '1.5K' | '2K';
+  output_format?: OutputFormat;
+  callback_url?: string;
+}
+
 export interface TaskCreateResponse extends TaskBillingResponse {
   id: string;
 }
@@ -144,6 +156,15 @@ export interface TextToImageResponse extends TaskResponse {
 
 export type EditImageResponse = TextToImageResponse;
 
+export interface DecomposeLayersResponse extends TaskResponse {
+  id: string;
+  status: AsyncTaskStatus;
+  base_image?: Image;
+  layers?: Image[];
+  error?: string;
+  [key: string]: unknown;
+}
+
 /**
  * Resolved response returned by the `run()` method after polling sees
  * `status: 'completed'`. Narrows the base response so `images` is
@@ -157,4 +178,10 @@ export type CompletedTextToImageResponse = TextToImageResponse & {
 export type CompletedEditImageResponse = EditImageResponse & {
   status: 'completed';
   images: Image[];
+};
+
+export type CompletedDecomposeLayersResponse = DecomposeLayersResponse & {
+  status: 'completed';
+  base_image: Image;
+  layers: Image[];
 };

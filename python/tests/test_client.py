@@ -4,8 +4,9 @@ from runapi.core import config
 from runapi.core.errors import AuthenticationError, ValidationError
 from runapi.seedream import SeedreamClient
 from runapi.seedream.resources.edit_image import EditImage
+from runapi.seedream.resources.decompose_layers import DecomposeLayers
 from runapi.seedream.resources.text_to_image import TextToImage
-from runapi.seedream.types import CompletedTextToImageResponse, TextToImageResponse
+from runapi.seedream.types import DecomposeLayersResponse, CompletedTextToImageResponse, TextToImageResponse
 
 
 class FakeHttp:
@@ -57,12 +58,45 @@ def test_uses_injected_http_client():
     client = SeedreamClient(api_key="k", http_client=fake)
     assert client.text_to_image._http is fake
     assert client.edit_image._http is fake
+    assert client.decompose_layers._http is fake
 
 
 def test_exposes_resource_accessors():
     client = SeedreamClient(api_key="k", http_client=FakeHttp())
     assert isinstance(client.text_to_image, TextToImage)
     assert isinstance(client.edit_image, EditImage)
+    assert isinstance(client.decompose_layers, DecomposeLayers)
+
+
+def test_decompose_layers_create_get_and_completed_response():
+    fake = FakeHttp(
+        {"id": "layers-1", "status": "processing"},
+        {
+            "id": "layers-1",
+            "status": "completed",
+            "base_image": {"url": "https://file.runapi.ai/base.jpeg"},
+            "layers": [{"url": "https://file.runapi.ai/layer.png"}],
+        },
+    )
+    client = SeedreamClient(api_key="k", http_client=fake)
+    created = client.decompose_layers.create(
+        model="seedream-5-pro-layer-decomposition",
+        image_url="https://cdn.runapi.ai/public/samples/image.jpg",
+        output_format="jpeg",
+    )
+    result = client.decompose_layers.get(created.id)
+
+    assert fake.calls[0] == (
+        "post",
+        "/api/v1/seedream/decompose_layers",
+        {
+            "model": "seedream-5-pro-layer-decomposition",
+            "image_url": "https://cdn.runapi.ai/public/samples/image.jpg",
+            "output_format": "jpeg",
+        },
+    )
+    assert isinstance(result, DecomposeLayersResponse)
+    assert result.base_image.url == "https://file.runapi.ai/base.jpeg"
 
 
 # --- request shapes -------------------------------------------------------

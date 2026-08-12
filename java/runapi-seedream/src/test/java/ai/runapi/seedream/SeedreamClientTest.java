@@ -18,6 +18,9 @@ import ai.runapi.seedream.types.CompletedTextToImageResponse;
 import ai.runapi.seedream.types.EditImageModel;
 import ai.runapi.seedream.types.EditImageParams;
 import ai.runapi.seedream.types.EditImageResponse;
+import ai.runapi.seedream.types.DecomposeLayersModel;
+import ai.runapi.seedream.types.DecomposeLayersParams;
+import ai.runapi.seedream.types.DecomposeLayersResponse;
 import ai.runapi.seedream.types.TextToImageModel;
 import ai.runapi.seedream.types.TextToImageParams;
 import ai.runapi.seedream.types.TextToImageResponse;
@@ -35,6 +38,40 @@ class SeedreamClientTest {
     assertNotNull(client.textToImage());
     assertNotNull(client.files());
     assertNotNull(client.account());
+    assertNotNull(client.decomposeLayers());
+  }
+
+  @Test
+  void decomposeLayersCreatesAndGetsExpectedShape() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport("{\"id\":\"layers_1\",\"status\":\"processing\"}");
+    SeedreamClient createClient = SeedreamClient.builder().apiKey("sk-test").transport(createTransport).build();
+    createClient.decomposeLayers().create(
+        DecomposeLayersParams.builder()
+            .model(DecomposeLayersModel.SEEDREAM_5_PRO_LAYER_DECOMPOSITION)
+            .imageUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+            .size("1K")
+            .outputFormat("png")
+            .build());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/seedream/decompose_layers", createTransport.request.getPath());
+    assertEquals("seedream-5-pro-layer-decomposition", bodyJson(createTransport.request).get("model").asText());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"id\":\"layers_1\",\"status\":\"completed\",\"base_image\":{\"url\":\"https://file.runapi.ai/base.jpeg\"},\"layers\":[{\"url\":\"https://file.runapi.ai/layer.png\"}]}");
+    DecomposeLayersResponse response = SeedreamClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .decomposeLayers().get("layers_1");
+    assertNotNull(response.getBaseImage());
+    assertEquals(1, response.getLayers().size());
+  }
+
+  @Test
+  void decomposeLayersRequiresModel() {
+    assertThrows(
+        NullPointerException.class,
+        () -> DecomposeLayersParams.builder()
+            .imageUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+            .build());
   }
 
   @Test

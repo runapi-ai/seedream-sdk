@@ -173,3 +173,32 @@ func TestTextToImageCreateCompactsEmptyCallback(t *testing.T) {
 		t.Fatal("expected empty callback_url to be compacted away")
 	}
 }
+
+func TestDecomposeLayersCreateAndGet(t *testing.T) {
+	stub := &stubHTTPClient{}
+	client := NewClientWithHTTP(stub)
+	_, err := client.DecomposeLayers.Create(context.Background(), DecomposeLayersParams{
+		Model:        Model5ProLayerDecomposition,
+		ImageURL:     "https://cdn.runapi.ai/public/samples/image.jpg",
+		Size:         "1K",
+		OutputFormat: "png",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stub.method != "POST" || stub.path != "/api/v1/seedream/decompose_layers" {
+		t.Fatalf("unexpected request: %s %s", stub.method, stub.path)
+	}
+	body := stub.body.(map[string]any)
+	if body["model"] != string(Model5ProLayerDecomposition) || body["image_url"] != "https://cdn.runapi.ai/public/samples/image.jpg" {
+		t.Fatalf("unexpected decomposition body: %#v", body)
+	}
+
+	_, err = client.DecomposeLayers.Get(context.Background(), "task_layers")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stub.method != "GET" || stub.path != "/api/v1/seedream/decompose_layers/task_layers" {
+		t.Fatalf("unexpected request: %s %s", stub.method, stub.path)
+	}
+}

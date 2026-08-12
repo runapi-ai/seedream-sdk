@@ -37,11 +37,11 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Seedream 5 Pro
 
-Use `seedream-5-pro-text-to-image` for generation and `seedream-5-pro-edit` for image editing. Both accept `output_quality`, optional `output_format`, and optional content safety checking; editing accepts up to 10 source image URLs.
+Use `seedream-5-pro-text-to-image` for generation, `seedream-5-pro-edit` for image editing, and `seedream-5-pro-layer-decomposition` to separate one image into a base image and ordered transparent layers.
 
 ## Language notes
 
-Use the public Go module with `github.com/runapi-ai/core-sdk/go` options when building image services, CLIs, or workers. The package exposes `TextToImage` for text models and `EditImage` for editing models. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Use the public Go module with `github.com/runapi-ai/core-sdk/go` options when building image services, CLIs, or workers. The package exposes `TextToImage`, `EditImage`, and `DecomposeLayers`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

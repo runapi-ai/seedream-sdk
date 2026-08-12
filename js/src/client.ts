@@ -1,6 +1,7 @@
 import { BaseClient, type ClientOptions } from '@runapi.ai/core';
 import { TextToImage } from './resources/text-to-image';
 import { EditImage } from './resources/edit-image';
+import { DecomposeLayers } from './resources/decompose-layers';
 
 /**
  * Seedream image generation and editing API client.
@@ -35,10 +36,13 @@ export class SeedreamClient extends BaseClient {
   public readonly textToImage: TextToImage;
   /** Edit source images according to a text prompt. */
   public readonly editImage: EditImage;
+  /** Separate an image into a base image and independent layers. */
+  public readonly decomposeLayers: DecomposeLayers;
 
   constructor(options: ClientOptions = {}) {
     super(options);
     this.textToImage = new TextToImage(this.http);
     this.editImage = new EditImage(this.http);
+    this.decomposeLayers = new DecomposeLayers(this.http);
   }
 }

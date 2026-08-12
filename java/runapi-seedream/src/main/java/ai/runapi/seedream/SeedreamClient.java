@@ -5,16 +5,19 @@ import ai.runapi.core.ClientOptions;
 import ai.runapi.core.http.HttpTransport;
 import java.net.URI;
 import ai.runapi.seedream.resources.EditImageResource;
+import ai.runapi.seedream.resources.DecomposeLayersResource;
 import ai.runapi.seedream.resources.TextToImageResource;
 
 /** Seedream model-family Java SDK client. */
 public final class SeedreamClient extends BaseClient {
   private final EditImageResource editImage;
+  private final DecomposeLayersResource decomposeLayers;
   private final TextToImageResource textToImage;
 
   private SeedreamClient(ClientOptions options) {
     super(options);
     this.editImage = new EditImageResource(transport(), options());
+    this.decomposeLayers = new DecomposeLayersResource(transport(), options());
     this.textToImage = new TextToImageResource(transport(), options());
   }
 
@@ -26,6 +29,11 @@ public final class SeedreamClient extends BaseClient {
   /** Edit Image operations. */
   public EditImageResource editImage() {
     return editImage;
+  }
+
+  /** Layer decomposition operations. */
+  public DecomposeLayersResource decomposeLayers() {
+    return decomposeLayers;
   }
 
   /** Text To Image operations. */

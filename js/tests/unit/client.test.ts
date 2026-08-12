@@ -40,4 +40,11 @@ describe('SeedreamClient', () => {
     expect(typeof client.editImage.create).toBe('function');
     expect(typeof client.editImage.get).toBe('function');
   });
+
+  it('exposes decomposeLayers resource', () => {
+    const client = new SeedreamClient({ apiKey: 'test-key' });
+    expect(typeof client.decomposeLayers.run).toBe('function');
+    expect(typeof client.decomposeLayers.create).toBe('function');
+    expect(typeof client.decomposeLayers.get).toBe('function');
+  });
 });

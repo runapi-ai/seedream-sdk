@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-seedream:0.1.2")
+  implementation("ai.runapi:runapi-seedream:0.1.3")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-seedream</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.4.0"))
+  implementation(platform("ai.runapi:runapi-bom:0.4.1"))
   implementation("ai.runapi:runapi-seedream")
 }
 ```
@@ -91,7 +91,7 @@ const task = await client.textToImage.create({
 
 ## Seedream 5 Pro
 
-Seedream 5 Pro supports high-quality text-to-image and edit-image workflows with 1K or 2K output selected through `output_quality`.
+Seedream 5 Pro supports high-quality text-to-image and edit-image workflows with 1K or 2K output selected through `output_quality`. The `decomposeLayers` resource separates one source image into a base image and ordered transparent layers with `seedream-5-pro-layer-decomposition`.
 
 ```typescript
 const result = await client.editImage.run({

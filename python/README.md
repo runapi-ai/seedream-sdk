@@ -57,11 +57,11 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Seedream 5 Pro
 
-Use `seedream-5-pro-text-to-image` for generation and `seedream-5-pro-edit` for image editing. Both accept `output_quality`, optional `output_format`, and optional content safety checking; editing accepts up to 10 source image URLs.
+Use `seedream-5-pro-text-to-image` for generation, `seedream-5-pro-edit` for image editing, and `seedream-5-pro-layer-decomposition` to separate one image into a base image and ordered transparent layers.
 
 ## Language notes
 
-Pass parameters as keyword arguments and catch the `runapi.seedream` error classes when building image jobs or scripts. The available resources are `text_to_image` and `edit_image`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Pass parameters as keyword arguments and catch the `runapi.seedream` error classes when building image jobs or scripts. The available resources are `text_to_image`, `edit_image`, and `decompose_layers`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

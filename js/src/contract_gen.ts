@@ -1,4 +1,34 @@
 export const contract = {
+  "decompose-layers": {
+    "models": [
+      "seedream-5-pro-layer-decomposition"
+    ],
+    "fields_by_model": {
+      "seedream-5-pro-layer-decomposition": {
+        "image_url": {
+          "required": true
+        },
+        "output_format": {
+          "enum": [
+            "png",
+            "jpeg"
+          ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "size": {
+          "enum": [
+            "auto",
+            "1K",
+            "1.5K",
+            "2K"
+          ]
+        }
+      }
+    }
+  },
   "edit-image": {
     "models": [
       "seedream-4.5-edit",

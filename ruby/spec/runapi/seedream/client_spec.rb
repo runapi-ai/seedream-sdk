@@ -29,4 +29,9 @@ RSpec.describe RunApi::Seedream::Client do
     client = described_class.new(api_key: "test-key")
     expect(client.edit_image).to be_a(RunApi::Seedream::Resources::EditImage)
   end
+
+  it "exposes decompose_layers accessor" do
+    client = described_class.new(api_key: "test-key")
+    expect(client.decompose_layers).to be_a(RunApi::Seedream::Resources::DecomposeLayers)
+  end
 end

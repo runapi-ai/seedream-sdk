@@ -17,6 +17,9 @@ type OutputFormat string
 // V4OutputResolution constrains the output resolution tier for Seedream V4 models.
 type V4OutputResolution string
 
+// LayerDecompositionSize constrains the requested output resolution tier.
+type LayerDecompositionSize string
+
 // TaskStatus represents the lifecycle state of an async task.
 type TaskStatus string
 
@@ -37,6 +40,8 @@ const (
 	ModelV4TextToImage SeedreamModel = "seedream-v4-text-to-image"
 	// ModelV4Edit is Seedream V4 image editing with seed and multi-output support.
 	ModelV4Edit SeedreamModel = "seedream-v4-edit"
+	// Model5ProLayerDecomposition separates one image into independent layers.
+	Model5ProLayerDecomposition SeedreamModel = "seedream-5-pro-layer-decomposition"
 )
 
 // TextToImageParams configures a generation request. AspectRatio and OutputQuality
@@ -71,6 +76,16 @@ type EditImageParams struct {
 	CallbackURL         string             `json:"callback_url,omitempty" help:"optional; webhook URL"`
 }
 
+// DecomposeLayersParams configures a layer decomposition request.
+type DecomposeLayersParams struct {
+	Model        SeedreamModel          `json:"model" help:"required; model slug"`
+	ImageURL     string                 `json:"image_url" help:"required; source image URL"`
+	Prompt       string                 `json:"prompt,omitempty" help:"optional; layer separation guidance, up to 5000 characters"`
+	Size         LayerDecompositionSize `json:"size,omitempty" help:"optional; output resolution tier. Default: auto"`
+	OutputFormat OutputFormat           `json:"output_format,omitempty" help:"optional; base image format. Default: jpeg"`
+	CallbackURL  string                 `json:"callback_url,omitempty" help:"optional; webhook URL"`
+}
+
 // AsyncTaskResponse implements core.TaskResponse for async task polling.
 type AsyncTaskResponse struct {
 	core.TaskBillingFacts
@@ -96,3 +111,10 @@ type TextToImageResponse struct {
 
 // EditImageResponse is an alias for TextToImageResponse since edits return the same shape.
 type EditImageResponse = TextToImageResponse
+
+// DecomposeLayersResponse contains the base image and independent layers.
+type DecomposeLayersResponse struct {
+	AsyncTaskResponse
+	BaseImage *Image  `json:"base_image,omitempty"`
+	Layers    []Image `json:"layers,omitempty"`
+}

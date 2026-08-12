@@ -37,6 +37,19 @@ module RunApi
       end
 
       CompletedEditImageResponse = CompletedTextToImageResponse
+
+      class DecomposeLayersResponse < RunApi::Core::TaskResponse
+        required :id, String
+        optional :status, String, enum: -> { RunApi::Core::TaskResponse::Status::ALL }
+        optional :base_image, -> { Image }
+        optional :layers, [-> { Image }]
+        optional :error, String
+      end
+
+      class CompletedDecomposeLayersResponse < DecomposeLayersResponse
+        required :base_image, -> { Image }
+        required :layers, [-> { Image }]
+      end
     end
   end
 end
