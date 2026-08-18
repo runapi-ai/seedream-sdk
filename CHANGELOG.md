@@ -1,5 +1,11 @@
 # Changelog
 
+## [ruby/v0.2.13](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.2.13) - 2026-08-18
+
+### Changed
+- Allow Ruby clients to install the core SDK release that adds persistent Files and multipart Uploads alongside this model SDK.
+
+
 ## [js/v0.2.13](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.2.13), [ruby/v0.2.12](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.2.12), [go/v0.2.13](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.2.13), [python/v0.2.3](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.2.3), [java/v0.1.3](https://github.com/runapi-ai/seedream-sdk/releases/tag/java%2Fv0.1.3) - 2026-08-12
 
 ### Added
