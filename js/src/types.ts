@@ -146,6 +146,21 @@ export interface Image {
   url: string;
 }
 
+/** Bounding box describing a layer's position within the base image. */
+export interface BoundingBox {
+  absolute?: number[];
+  normalized?: number[];
+}
+
+/** A decomposed layer with its position and metadata. */
+export interface Layer {
+  url: string;
+  z_index: number;
+  bounding_box?: BoundingBox;
+  name?: string;
+  description?: string;
+}
+
 export interface TextToImageResponse extends TaskResponse {
   id: string;
   status: AsyncTaskStatus;
@@ -160,7 +175,7 @@ export interface DecomposeLayersResponse extends TaskResponse {
   id: string;
   status: AsyncTaskStatus;
   base_image?: Image;
-  layers?: Image[];
+  layers?: Layer[];
   error?: string;
   [key: string]: unknown;
 }
@@ -183,5 +198,5 @@ export type CompletedEditImageResponse = EditImageResponse & {
 export type CompletedDecomposeLayersResponse = DecomposeLayersResponse & {
   status: 'completed';
   base_image: Image;
-  layers: Image[];
+  layers: Layer[];
 };

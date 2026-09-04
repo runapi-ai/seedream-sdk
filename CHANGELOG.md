@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.3.0), [ruby/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.3.0), [go/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.3.0), [python/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.3.0), [java/v0.2.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/java%2Fv0.2.0) - 2026-09-04
+
+### Added
+- Add Layer and BoundingBox types for decompose_layers responses. Layers now include z_index, bounding_box, name, and description when the model returns them.
+
+
 ## [ruby/v0.2.13](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.2.13) - 2026-08-18
 
 ### Changed

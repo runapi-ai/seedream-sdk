@@ -16,7 +16,7 @@ RSpec.describe RunApi::Seedream::Resources::DecomposeLayers do
         "id" => "task-1",
         "status" => "completed",
         "base_image" => {"url" => "https://file.runapi.ai/base.jpeg"},
-        "layers" => [{"url" => "https://file.runapi.ai/layer.png"}]
+        "layers" => [{"url" => "https://file.runapi.ai/layer.png", "z_index" => 1}]
       })
 
     created = resource.create(

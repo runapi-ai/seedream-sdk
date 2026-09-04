@@ -20,6 +20,19 @@ module RunApi
         optional :url, String
       end
 
+      class BoundingBox < RunApi::Core::BaseModel
+        optional :absolute, [Integer]
+        optional :normalized, [Integer]
+      end
+
+      class Layer < RunApi::Core::BaseModel
+        required :url, String
+        required :z_index, Integer
+        optional :bounding_box, -> { BoundingBox }
+        optional :name, String
+        optional :description, String
+      end
+
       class TextToImageResponse < RunApi::Core::TaskResponse
         required :id, String
         optional :status, String, enum: -> { RunApi::Core::TaskResponse::Status::ALL }
@@ -42,13 +55,13 @@ module RunApi
         required :id, String
         optional :status, String, enum: -> { RunApi::Core::TaskResponse::Status::ALL }
         optional :base_image, -> { Image }
-        optional :layers, [-> { Image }]
+        optional :layers, [-> { Layer }]
         optional :error, String
       end
 
       class CompletedDecomposeLayersResponse < DecomposeLayersResponse
         required :base_image, -> { Image }
-        required :layers, [-> { Image }]
+        required :layers, [-> { Layer }]
       end
     end
   end

@@ -75,7 +75,7 @@ def test_decompose_layers_create_get_and_completed_response():
             "id": "layers-1",
             "status": "completed",
             "base_image": {"url": "https://file.runapi.ai/base.jpeg"},
-            "layers": [{"url": "https://file.runapi.ai/layer.png"}],
+            "layers": [{"url": "https://file.runapi.ai/layer.png", "z_index": 1}],
         },
     )
     client = SeedreamClient(api_key="k", http_client=fake)

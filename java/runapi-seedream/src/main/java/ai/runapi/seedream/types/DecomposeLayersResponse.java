@@ -19,14 +19,14 @@ public class DecomposeLayersResponse extends AbstractTaskResponse implements Pol
   @JsonProperty("status") private String status;
   @JsonProperty("error") private String error;
   @JsonProperty("base_image") private Image baseImage;
-  @JsonProperty("layers") private List<Image> layers;
+  @JsonProperty("layers") private List<Layer> layers;
   private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
 
   public String getId() { return id; }
   public TaskStatus getStatus() { return new TaskStatus(status == null ? "" : status); }
   public String getError() { return error; }
   public Image getBaseImage() { return baseImage; }
-  public List<Image> getLayers() { return layers == null ? null : Collections.unmodifiableList(layers); }
+  public List<Layer> getLayers() { return layers == null ? null : Collections.unmodifiableList(layers); }
 
   @JsonAnyGetter
   public Map<String, JsonNode> extraFields() { return Collections.unmodifiableMap(extraFields); }

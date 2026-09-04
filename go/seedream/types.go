@@ -112,9 +112,24 @@ type TextToImageResponse struct {
 // EditImageResponse is an alias for TextToImageResponse since edits return the same shape.
 type EditImageResponse = TextToImageResponse
 
+// Layer holds a decomposed layer with its position and metadata.
+type Layer struct {
+	URL         string       `json:"url"`
+	ZIndex      int          `json:"z_index"`
+	BoundingBox *BoundingBox `json:"bounding_box,omitempty"`
+	Name        string       `json:"name,omitempty"`
+	Description string       `json:"description,omitempty"`
+}
+
+// BoundingBox describes a layer's position within the base image.
+type BoundingBox struct {
+	Absolute   []int `json:"absolute,omitempty"`
+	Normalized []int `json:"normalized,omitempty"`
+}
+
 // DecomposeLayersResponse contains the base image and independent layers.
 type DecomposeLayersResponse struct {
 	AsyncTaskResponse
 	BaseImage *Image  `json:"base_image,omitempty"`
-	Layers    []Image `json:"layers,omitempty"`
+	Layers    []Layer `json:"layers,omitempty"`
 }
