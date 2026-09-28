@@ -1,5 +1,15 @@
 # Changelog
 
+## [js/v0.3.1](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.3.1), [go/v0.3.1](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.3.1) - 2026-09-28
+
+### Added
+- Return usage.cost as a float USD amount on completed async Task query and webhook envelopes.
+
+### Removed
+- Remove the public Task billing object from Task envelopes.
+  Migration: Read usage.cost on completed Task envelopes. Create, processing, and failed envelopes omit usage.
+
+
 ## [js/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.3.0), [ruby/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.3.0), [go/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.3.0), [python/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.3.0), [java/v0.2.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/java%2Fv0.2.0) - 2026-09-04
 
 ### Added

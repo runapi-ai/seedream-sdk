@@ -73,10 +73,9 @@ def test_decompose_layers_create_get_and_completed_response():
         {"id": "layers-1", "status": "processing"},
         {
             "id": "layers-1",
-            "status": "completed",
+            "status": "completed", "usage": {"cost": 0.05},
             "base_image": {"url": "https://file.runapi.ai/base.jpeg"},
-            "layers": [{"url": "https://file.runapi.ai/layer.png", "z_index": 1}],
-        },
+            "layers": [{"url": "https://file.runapi.ai/layer.png", "z_index": 1}]},
     )
     client = SeedreamClient(api_key="k", http_client=fake)
     created = client.decompose_layers.create(
@@ -92,8 +91,7 @@ def test_decompose_layers_create_get_and_completed_response():
         {
             "model": "seedream-5-pro-layer-decomposition",
             "image_url": "https://cdn.runapi.ai/public/samples/image.jpg",
-            "output_format": "jpeg",
-        },
+            "output_format": "jpeg"},
     )
     assert isinstance(result, DecomposeLayersResponse)
     assert result.base_image.url == "https://file.runapi.ai/base.jpeg"
@@ -109,8 +107,7 @@ def test_create_posts_compacted_body():
         model="seedream-v4-text-to-image", prompt="hello world", aspect_ratio="1:1", seed=None
     )
     assert fake.calls == [
-        ("post", "/api/v1/seedream/text_to_image", {"model": "seedream-v4-text-to-image", "prompt": "hello world", "aspect_ratio": "1:1"}),
-    ]
+        ("post", "/api/v1/seedream/text_to_image", {"model": "seedream-v4-text-to-image", "prompt": "hello world", "aspect_ratio": "1:1"})]
     assert isinstance(result, TextToImageResponse)
 
 
@@ -135,10 +132,8 @@ def test_lite_output_format_is_forwarded():
                 "source_image_urls": ["https://cdn.runapi.ai/public/samples/image.jpg"],
                 "aspect_ratio": "1:1",
                 "output_quality": "high",
-                "output_format": "jpeg",
-            },
-        ),
-    ]
+                "output_format": "jpeg"},
+        )]
 
 
 def test_pro_edit_is_forwarded():
@@ -166,7 +161,7 @@ def test_get_fetches_by_id():
 def test_run_narrows_completed_type():
     fake = FakeHttp(
         {"id": "t1", "status": "pending"},
-        {"id": "t1", "status": "completed", "images": [{"url": "https://x/y.png"}]},
+        {"id": "t1", "status": "completed", "usage": {"cost": 0.05}, "images": [{"url": "https://x/y.png"}]},
     )
     client = SeedreamClient(api_key="k", http_client=fake)
     result = client.text_to_image.run(model="seedream-v4-text-to-image", prompt="a serene lake")
