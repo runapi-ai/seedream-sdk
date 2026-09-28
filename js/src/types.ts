@@ -1,4 +1,4 @@
-import type { AsyncTaskStatus, TaskBillingResponse, TaskResponse } from '@runapi.ai/core';
+import type { AsyncTaskStatus, TaskResponse } from '@runapi.ai/core';
 
 /** Union of all Seedream model identifiers across text-to-image and edit endpoints. */
 export type SeedreamModel =
@@ -137,7 +137,7 @@ export interface DecomposeLayersParams {
   callback_url?: string;
 }
 
-export interface TaskCreateResponse extends TaskBillingResponse {
+export interface TaskCreateResponse {
   id: string;
 }
 
