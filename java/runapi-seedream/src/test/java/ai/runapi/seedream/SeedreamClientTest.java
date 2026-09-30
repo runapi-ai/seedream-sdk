@@ -66,15 +66,6 @@ class SeedreamClientTest {
   }
 
   @Test
-  void decomposeLayersRequiresModel() {
-    assertThrows(
-        NullPointerException.class,
-        () -> DecomposeLayersParams.builder()
-            .imageUrl("https://cdn.runapi.ai/public/samples/image.jpg")
-            .build());
-  }
-
-  @Test
   void openValueClassesSerializeAsScalarStrings() throws Exception {
     String json = Json.mapper().writeValueAsString(new TextToImageModel("seedream-4.5-text-to-image"));
 

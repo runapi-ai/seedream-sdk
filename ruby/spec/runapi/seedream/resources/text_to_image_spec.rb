@@ -73,18 +73,6 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
       expect(result.id).to eq("task-v4-edit")
     end
 
-    it "raises ValidationError when source_image_urls is missing for image models" do
-      expect {
-        edit_image.create(model: "seedream-v4-edit", prompt: "test", aspect_ratio: "1:1")
-      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls is required/)
-    end
-
-    it "raises ValidationError when source_image_urls is sent for text models" do
-      expect {
-        text_to_image.create(model: "seedream-4.5-text-to-image", prompt: "test", source_image_urls: ["x"], aspect_ratio: "1:1", output_quality: "basic")
-      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls is not supported/)
-    end
-
     it "POSTs enable_safety_checker for 4.5 models" do
       params = {model: "seedream-4.5-text-to-image", prompt: "test", aspect_ratio: "1:1", output_quality: "basic", enable_safety_checker: true}
       expect(http).to receive(:request).with(:post, endpoint, body: params).and_return("id" => "task-45-nsfw")
@@ -93,59 +81,23 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
       expect(result.id).to eq("task-45-nsfw")
     end
 
-    it "raises ValidationError for invalid v4 output_count" do
-      expect {
-        text_to_image.create(model: "seedream-v4-text-to-image", prompt: "test", output_count: 7)
-      }.to raise_error(RunApi::Core::ValidationError, /output_count must be one of: 1, 2, 3, 4, 5, 6/)
-    end
+    it "lets the server decide unknown models and params" do
+      client = RunApi::Core::HttpClient.new(
+        RunApi::Core::ClientOptions.new(api_key: "test-key", base_url: "https://runapi.ai", max_retries: 0)
+      )
+      resource = described_class.new(client)
+      params = {model: "seedream-future-text-to-image", prompt: "a lake", future_setting: "on"}
+      url = "https://runapi.ai#{endpoint}"
+      json = {"Content-Type" => "application/json"}
 
-    it "raises ValidationError for string v4 output_count" do
-      expect {
-        text_to_image.create(model: "seedream-v4-text-to-image", prompt: "test", output_count: "3")
-      }.to raise_error(RunApi::Core::ValidationError, /output_count must be one of: 1, 2, 3, 4, 5, 6/)
-    end
+      stub_request(:post, url).with(body: params.merge(output_quality: "ultra"))
+        .to_return(status: 200, body: '{"id":"task-1","status":"processing"}', headers: json)
+      stub_request(:post, url).with(body: params.merge(output_quality: "bad"))
+        .to_return(status: 400, body: '{"error":"output_quality is not supported"}', headers: json)
 
-    it "raises ValidationError for string v4 seed" do
-      expect {
-        text_to_image.create(model: "seedream-v4-text-to-image", prompt: "test", seed: "12345")
-      }.to raise_error(RunApi::Core::ValidationError, /seed must be an integer/)
-    end
-
-    it "raises ValidationError for invalid aspect_ratio" do
-      expect {
-        text_to_image.create(model: "seedream-4.5-text-to-image", prompt: "test", aspect_ratio: "auto", output_quality: "basic")
-      }.to raise_error(RunApi::Core::ValidationError, /aspect_ratio must be one of:/)
-    end
-
-    it "raises ValidationError for short 5-lite prompt" do
-      expect {
-        text_to_image.create(model: "seedream-5-lite-text-to-image", prompt: "hi", aspect_ratio: "1:1", output_quality: "basic")
-      }.to raise_error(RunApi::Core::ValidationError, /prompt must be between 3 and 3000 characters/)
-    end
-
-    it "raises ValidationError for invalid 5-lite output_format" do
-      expect {
-        text_to_image.create(model: "seedream-5-lite-text-to-image", prompt: "test", aspect_ratio: "1:1", output_quality: "basic", output_format: "webp")
-      }.to raise_error(RunApi::Core::ValidationError, /output_format must be one of: png, jpeg/)
-    end
-
-    it "allows 5 Pro prompts up to 5000 characters" do
-      params = {model: "seedream-5-pro-text-to-image", prompt: "x" * 5000, aspect_ratio: "1:1", output_quality: "basic"}
-      expect(http).to receive(:request).with(:post, endpoint, body: params).and_return("id" => "task-long-pro")
-
-      expect(text_to_image.create(**params).id).to eq("task-long-pro")
-    end
-
-    it "rejects more than ten source images for 5 Pro edit" do
-      expect {
-        edit_image.create(
-          model: "seedream-5-pro-edit",
-          prompt: "restyle",
-          source_image_urls: Array.new(11, "https://cdn.runapi.ai/public/samples/image.jpg"),
-          aspect_ratio: "1:1",
-          output_quality: "basic"
-        )
-      }.to raise_error(RunApi::Core::ValidationError, /source_image_urls must contain between 1 and 10 items/)
+      expect(resource.create(**params, output_quality: "ultra").id).to eq("task-1")
+      expect { resource.create(**params, output_quality: "bad") }
+        .to raise_error(RunApi::Core::ValidationError, "output_quality is not supported")
     end
   end
 

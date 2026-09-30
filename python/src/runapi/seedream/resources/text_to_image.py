@@ -2,15 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
-from runapi.core import Resource, ValidationError, RequestOptions
+from runapi.core import Resource, RequestOptions
 
-from ..contract_gen import CONTRACT
 from ..types import (
-    LONG_PROMPT_MODELS,
-    MINIMUM_THREE_PROMPT_MODELS,
-    V4_MODELS,
     CompletedTextToImageResponse,
     TextToImageResponse,
 )
@@ -23,10 +19,6 @@ class TextToImage(Resource):
 
     RESPONSE_CLASS = TextToImageResponse
     COMPLETED_RESPONSE_CLASS = CompletedTextToImageResponse
-
-    PROMPT_MAX_LENGTH = 3000
-    V4_PROMPT_MAX_LENGTH = 5000
-    PROMPT_MIN_LENGTH_LITE = 3
 
     def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Create a text-to-image task and poll until it completes.
@@ -50,7 +42,6 @@ class TextToImage(Resource):
             The task creation result with an id.
         """
         compacted = self._compact_params(params)
-        self._validate_params(compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
@@ -63,43 +54,3 @@ class TextToImage(Resource):
             The current task status.
         """
         return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
-
-    def _validate_params(self, params: Dict[str, Any]) -> None:
-        self._validate_contract(CONTRACT["text-to-image"], params)
-
-        model = params.get("model")
-
-        prompt = params.get("prompt")
-        if not (isinstance(prompt, str) and prompt):
-            raise ValidationError("prompt is required")
-        max_length = self.V4_PROMPT_MAX_LENGTH if model in LONG_PROMPT_MODELS else self.PROMPT_MAX_LENGTH
-        if len(prompt) > max_length:
-            raise ValidationError(f"prompt must be at most {max_length} characters")
-        if model in MINIMUM_THREE_PROMPT_MODELS and len(prompt) < self.PROMPT_MIN_LENGTH_LITE:
-            raise ValidationError(
-                f"prompt must be between {self.PROMPT_MIN_LENGTH_LITE} and {max_length} characters"
-            )
-
-        if model in V4_MODELS:
-            self._validate_integer(params, "seed")
-
-        if self._field_present(params, "source_image_urls"):
-            raise ValidationError(f"source_image_urls is not supported for {model}")
-
-    @staticmethod
-    def _field_present(params: Dict[str, Any], key: str) -> bool:
-        value = params.get(key)
-        if value is None:
-            return False
-        if hasattr(value, "__len__"):
-            return len(value) > 0
-        return True
-
-    @staticmethod
-    def _validate_integer(params: Dict[str, Any], key: str) -> None:
-        value = params.get(key)
-        if value is None:
-            return
-        if isinstance(value, int) and not isinstance(value, bool):
-            return
-        raise ValidationError(f"{key} must be an integer")

@@ -1,7 +1,12 @@
+import json
+
+import httpx
 import pytest
 
 from runapi.core import config
 from runapi.core.errors import AuthenticationError, ValidationError
+from runapi.core.http_client import HttpClient
+from runapi.core.options import ClientOptions
 from runapi.seedream import SeedreamClient
 from runapi.seedream.resources.edit_image import EditImage
 from runapi.seedream.resources.decompose_layers import DecomposeLayers
@@ -169,82 +174,27 @@ def test_run_narrows_completed_type():
     assert result.images[0].url == "https://x/y.png"
 
 
-# --- validation -----------------------------------------------------------
+def test_server_decides_unknown_models_and_params():
+    sent = []
 
+    def handler(request):
+        body = json.loads(request.content)
+        sent.append(body)
+        if body["output_quality"] == "bad":
+            return httpx.Response(400, json={"error": "output_quality is not supported"})
+        return httpx.Response(200, json={"id": "task_1", "status": "processing"})
 
-def test_rejects_unknown_model():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="model must be one of:"):
-        client.text_to_image.create(model="nope", prompt="hi there")
-
-
-def test_requires_prompt():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="prompt is required"):
-        client.text_to_image.create(model="seedream-v4-text-to-image")
-
-
-def test_v4_output_count_range():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="output_count must be one of: 1, 2, 3, 4, 5, 6"):
-        client.text_to_image.create(model="seedream-v4-text-to-image", prompt="hi there", output_count=9)
-
-
-def test_non_v4_requires_aspect_ratio_and_quality():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="aspect_ratio is required"):
-        client.text_to_image.create(model="seedream-4.5-text-to-image", prompt="hi there")
-
-
-def test_text_to_image_rejects_source_image_urls():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="source_image_urls is not supported"):
-        client.text_to_image.create(
-            model="seedream-v4-text-to-image", prompt="hi there", source_image_urls=["https://x/a.png"]
-        )
-
-
-def test_edit_requires_source_image_urls():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="source_image_urls is required"):
-        client.edit_image.create(model="seedream-v4-edit", prompt="make it pop")
-
-
-def test_lite_prompt_min_length():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="between 3 and 3000"):
-        client.text_to_image.create(model="seedream-5-lite-text-to-image", prompt="hi", aspect_ratio="1:1", output_quality="high")
-
-
-def test_pro_prompt_allows_5000_characters():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    client.text_to_image.create(
-        model="seedream-5-pro-text-to-image",
-        prompt="x" * 5000,
-        aspect_ratio="1:1",
-        output_quality="high",
+    http = HttpClient(
+        ClientOptions(api_key="k", base_url="https://runapi.ai", max_retries=0),
+        transport=httpx.MockTransport(handler),
     )
+    client = SeedreamClient(api_key="k", http_client=http)
+    params = {"model": "seedream-future-text-to-image", "prompt": "a lake", "future_setting": "on"}
 
+    result = client.text_to_image.create(**params, output_quality="ultra")
+    with pytest.raises(ValidationError) as error:
+        client.text_to_image.create(**params, output_quality="bad")
 
-def test_pro_edit_rejects_more_than_ten_source_images():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="source_image_urls must contain between 1 and 10 items"):
-        client.edit_image.create(
-            model="seedream-5-pro-edit",
-            prompt="restyle this image",
-            source_image_urls=["https://cdn.runapi.ai/public/samples/image.jpg"] * 11,
-            aspect_ratio="1:1",
-            output_quality="high",
-        )
-
-
-def test_lite_output_format_enum():
-    client = SeedreamClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="output_format must be one of: png, jpeg"):
-        client.text_to_image.create(
-            model="seedream-5-lite-text-to-image",
-            prompt="hi there",
-            aspect_ratio="1:1",
-            output_quality="high",
-            output_format="webp",
-        )
+    assert sent[0] == {**params, "output_quality": "ultra"}
+    assert result.id == "task_1"
+    assert error.value.message == "output_quality is not supported"

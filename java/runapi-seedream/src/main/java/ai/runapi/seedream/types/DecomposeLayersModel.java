@@ -14,7 +14,7 @@ public final class DecomposeLayersModel {
   /** Creates a model value from its public slug. */
   @JsonCreator
   public DecomposeLayersModel(String value) {
-    this.value = SeedreamParamUtils.requireNonBlankTrim(value, "model");
+    this.value = value;
   }
 
   /** Returns the public model slug. */

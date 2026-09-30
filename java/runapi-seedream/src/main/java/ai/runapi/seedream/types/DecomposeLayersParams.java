@@ -13,8 +13,8 @@ public final class DecomposeLayersParams {
   private final String callbackUrl;
 
   private DecomposeLayersParams(Builder builder) {
-    this.model = SeedreamParamUtils.requireNonBlank(builder.model, "model");
-    this.imageUrl = SeedreamParamUtils.requireNonBlank(builder.imageUrl, "imageUrl");
+    this.model = builder.model;
+    this.imageUrl = builder.imageUrl;
     this.prompt = builder.prompt;
     this.size = builder.size;
     this.outputFormat = builder.outputFormat;
@@ -60,32 +60,32 @@ public final class DecomposeLayersParams {
     }
 
     public Builder model(String value) {
-      this.model = SeedreamParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
     public Builder imageUrl(String value) {
-      this.imageUrl = SeedreamParamUtils.requireNonBlank(value, "imageUrl");
+      this.imageUrl = value;
       return this;
     }
 
     public Builder prompt(String value) {
-      this.prompt = SeedreamParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
     public Builder size(String value) {
-      this.size = SeedreamParamUtils.requireNonBlank(value, "size");
+      this.size = value;
       return this;
     }
 
     public Builder outputFormat(String value) {
-      this.outputFormat = SeedreamParamUtils.requireNonBlank(value, "outputFormat");
+      this.outputFormat = value;
       return this;
     }
 
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SeedreamParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

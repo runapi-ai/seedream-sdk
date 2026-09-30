@@ -118,20 +118,6 @@ describe('TextToImage', () => {
     });
   });
 
-  it('should reject v4-only output controls for 5 pro models', async () => {
-    const textToImage = new TextToImage(mockHttp);
-
-    await expect(textToImage.create({
-      model: 'seedream-5-pro-text-to-image',
-      prompt: 'A photorealistic rooftop cafe at sunrise',
-      aspect_ratio: '21:9',
-      output_quality: 'high',
-      output_resolution: '2k',
-    } as any)).rejects.toThrow(/output_resolution is not allowed/);
-
-    expect(mockHttp.request).not.toHaveBeenCalled();
-  });
-
   it('should send correct request for v4 text-to-image', async () => {
     const mockResponse: TaskCreateResponse = { id: 'task-v4' };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
