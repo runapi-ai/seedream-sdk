@@ -58,11 +58,12 @@ class SeedreamClientTest {
     assertEquals("seedream-5-pro-layer-decomposition", bodyJson(createTransport.request).get("model").asText());
 
     CapturingTransport getTransport = new CapturingTransport(
-        "{\"id\":\"layers_1\",\"status\":\"completed\",\"base_image\":{\"url\":\"https://file.runapi.ai/base.jpeg\"},\"layers\":[{\"url\":\"https://file.runapi.ai/layer.png\",\"z_index\":1}]}");
+        "{\"id\":\"layers_1\",\"status\":\"completed\",\"base_image\":{\"url\":\"https://file.runapi.ai/base.jpeg\"},\"layers\":[{\"url\":\"https://file.runapi.ai/layer.png\",\"z_index\":1}],\"usage\":{\"cost\":0.05,\"generated_images\":2}}");
     DecomposeLayersResponse response = SeedreamClient.builder().apiKey("sk-test").transport(getTransport).build()
         .decomposeLayers().get("layers_1");
     assertNotNull(response.getBaseImage());
     assertEquals(1, response.getLayers().size());
+    assertEquals(Integer.valueOf(2), response.getUsage().getGeneratedImages());
   }
 
   @Test
@@ -137,9 +138,12 @@ class SeedreamClientTest {
             .aspectRatio("3:2")
             .outputQuality("basic")
             .outputFormat("png")
+            .background("transparent")
             .build()
     );
-    assertEquals("seedream-5-pro-edit", bodyJson(transport.request).get("model").asText());
+    JsonNode editBody = bodyJson(transport.request);
+    assertEquals("seedream-5-pro-edit", editBody.get("model").asText());
+    assertEquals("transparent", editBody.get("background").asText());
   }
 
   @Test

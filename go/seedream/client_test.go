@@ -9,9 +9,10 @@ import (
 )
 
 type stubHTTPClient struct {
-	method string
-	path   string
-	body   any
+	method   string
+	path     string
+	body     any
+	response json.RawMessage
 }
 
 func (s *stubHTTPClient) Request(_ context.Context, method, path string, opts *core.HTTPRequestOptions) (json.RawMessage, error) {
@@ -19,6 +20,9 @@ func (s *stubHTTPClient) Request(_ context.Context, method, path string, opts *c
 	s.path = path
 	if opts != nil {
 		s.body = opts.Body
+	}
+	if s.response != nil {
+		return s.response, nil
 	}
 	return json.RawMessage(`{"id":"task_123","status":"processing"}`), nil
 }
@@ -113,12 +117,13 @@ func TestSeedream5ProRequestsUsePublicModelIDs(t *testing.T) {
 		AspectRatio:     "3:2",
 		OutputQuality:   "basic",
 		OutputFormat:    "png",
+		Background:      "transparent",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	body = stub.body.(map[string]any)
-	if body["model"] != string(Model5ProEdit) || body["source_image_urls"] == nil {
+	if body["model"] != string(Model5ProEdit) || body["source_image_urls"] == nil || body["background"] != "transparent" {
 		t.Fatalf("unexpected 5 Pro edit body: %#v", body)
 	}
 }
@@ -194,11 +199,15 @@ func TestDecomposeLayersCreateAndGet(t *testing.T) {
 		t.Fatalf("unexpected decomposition body: %#v", body)
 	}
 
-	_, err = client.DecomposeLayers.Get(context.Background(), "task_layers")
+	stub.response = json.RawMessage(`{"id":"task_layers","status":"completed","base_image":{"url":"https://file.runapi.ai/base.jpeg"},"layers":[{"url":"https://file.runapi.ai/layer.png","z_index":1}],"usage":{"cost":0.05,"generated_images":2}}`)
+	result, err := client.DecomposeLayers.Get(context.Background(), "task_layers")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if stub.method != "GET" || stub.path != "/api/v1/seedream/decompose_layers/task_layers" {
 		t.Fatalf("unexpected request: %s %s", stub.method, stub.path)
+	}
+	if result.Usage == nil || result.Usage.GeneratedImages == nil || *result.Usage.GeneratedImages != 2 {
+		t.Fatalf("expected typed generated image count, got %#v", result.Usage)
 	}
 }

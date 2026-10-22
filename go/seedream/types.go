@@ -14,6 +14,9 @@ type OutputQuality string
 // OutputFormat constrains the image format for Seedream 5-Lite and 5 Pro models.
 type OutputFormat string
 
+// Background constrains the Seedream 5 Pro edit background mode.
+type Background string
+
 // V4OutputResolution constrains the output resolution tier for Seedream V4 models.
 type V4OutputResolution string
 
@@ -49,13 +52,13 @@ const (
 // OutputResolution instead.
 type TextToImageParams struct {
 	Model               SeedreamModel      `json:"model" help:"required; model slug"`
-	Prompt              string             `json:"prompt" help:"required; 4.5 models allow 1-3000 chars, 5-lite models allow 3-3000 chars, 5 Pro models allow 3-5000 chars, v4 models allow 1-5000 chars"`
+	Prompt              string             `json:"prompt" help:"required; 4.5 models allow 1-3000 chars, 5-lite models allow 4-2995 chars, 5 Pro models allow 4-5000 chars, v4 models allow 1-5000 chars"`
 	AspectRatio         AspectRatio        `json:"aspect_ratio,omitempty" help:"required for 4.5/5-lite/5 Pro; optional for v4; output aspect ratio"`
 	OutputQuality       OutputQuality      `json:"output_quality" help:"required for 4.5/5-lite/5 Pro only; output quality preset"`
 	OutputFormat        OutputFormat       `json:"output_format,omitempty" help:"optional for 5-lite/5 Pro only; output image format. Default: png"`
 	OutputResolution    V4OutputResolution `json:"output_resolution,omitempty" help:"optional for v4; output resolution tier. Default: 1k"`
 	OutputCount         *int               `json:"output_count,omitempty" help:"optional for v4; number of generated images. Default: 1"`
-	Seed                *int               `json:"seed,omitempty" help:"optional for v4; integer seed for reproducibility"`
+	Seed                *int               `json:"seed,omitempty" help:"optional for v4; integer seed for reproducibility, up to 1000000"`
 	EnableSafetyChecker *bool              `json:"enable_safety_checker,omitempty" help:"optional; content safety check toggle"`
 	CallbackURL         string             `json:"callback_url,omitempty" help:"optional; webhook URL"`
 }
@@ -64,14 +67,15 @@ type TextToImageParams struct {
 // requirements as TextToImageParams apply, plus SourceImageURLs is required.
 type EditImageParams struct {
 	Model               SeedreamModel      `json:"model" help:"required; model slug"`
-	Prompt              string             `json:"prompt" help:"required; 4.5 models allow 1-3000 chars, 5-lite models allow 3-3000 chars, 5 Pro models allow 3-5000 chars, v4 models allow 1-5000 chars"`
+	Prompt              string             `json:"prompt" help:"required; 4.5 models allow 1-3000 chars, 5-lite models allow 4-2995 chars, 5 Pro models allow 4-5000 chars, v4 models allow 1-5000 chars"`
 	AspectRatio         AspectRatio        `json:"aspect_ratio,omitempty" help:"required for 4.5/5-lite/5 Pro; optional for v4; output aspect ratio"`
 	OutputQuality       OutputQuality      `json:"output_quality" help:"required for 4.5/5-lite/5 Pro only; output quality preset"`
 	OutputFormat        OutputFormat       `json:"output_format,omitempty" help:"optional for 5-lite/5 Pro only; output image format. Default: png"`
 	SourceImageURLs     []string           `json:"source_image_urls" help:"required; source image URLs. 5 Pro/v4 edit allow up to 10 URLs, 4.5/5-lite edit allow up to 14"`
+	Background          Background         `json:"background,omitempty" help:"optional for 5 Pro edit only; transparent keeps the source PNG's transparent background. Requires exactly one PNG source image with an alpha channel and output_format png"`
 	OutputResolution    V4OutputResolution `json:"output_resolution,omitempty" help:"optional for v4; output resolution tier. Default: 1k"`
 	OutputCount         *int               `json:"output_count,omitempty" help:"optional for v4; number of generated images. Default: 1"`
-	Seed                *int               `json:"seed,omitempty" help:"optional for v4; integer seed for reproducibility"`
+	Seed                *int               `json:"seed,omitempty" help:"optional for v4; integer seed for reproducibility, up to 1000000"`
 	EnableSafetyChecker *bool              `json:"enable_safety_checker,omitempty" help:"optional; content safety check toggle"`
 	CallbackURL         string             `json:"callback_url,omitempty" help:"optional; webhook URL"`
 }

@@ -33,6 +33,7 @@ export type AspectRatio = '1:1' | '4:3' | '3:4' | '16:9' | '9:16' | '2:3' | '3:2
 export type OutputQuality = 'basic' | 'high';
 /** Output image format for 5-Lite and 5 Pro models. */
 export type OutputFormat = 'png' | 'jpeg';
+export type Background = 'transparent';
 /** Pixel resolution tier for V4 models. */
 export type V4OutputResolution = '1k' | '2k' | '4k';
 
@@ -104,6 +105,8 @@ export interface Generation5ProEditParams extends ImageGenerationBaseParams {
   source_image_urls: string[];
   /** Output image format (default: "png"). */
   output_format?: OutputFormat;
+  /** Keep the transparent background of the source image. Requires exactly one PNG source image with an alpha channel and output_format "png". */
+  background?: Background;
 }
 
 export interface GenerationV4TextParams extends V4GenerationBaseParams {

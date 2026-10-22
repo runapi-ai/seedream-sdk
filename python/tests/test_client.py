@@ -78,7 +78,7 @@ def test_decompose_layers_create_get_and_completed_response():
         {"id": "layers-1", "status": "processing"},
         {
             "id": "layers-1",
-            "status": "completed", "usage": {"cost": 0.05},
+            "status": "completed", "usage": {"cost": 0.05, "generated_images": 2},
             "base_image": {"url": "https://file.runapi.ai/base.jpeg"},
             "layers": [{"url": "https://file.runapi.ai/layer.png", "z_index": 1}]},
     )
@@ -100,6 +100,7 @@ def test_decompose_layers_create_get_and_completed_response():
     )
     assert isinstance(result, DecomposeLayersResponse)
     assert result.base_image.url == "https://file.runapi.ai/base.jpeg"
+    assert result.usage.generated_images == 2
 
 
 # --- request shapes -------------------------------------------------------
@@ -151,9 +152,11 @@ def test_pro_edit_is_forwarded():
         aspect_ratio="3:2",
         output_quality="basic",
         output_format="png",
+        background="transparent",
     )
     assert fake.calls[0][2]["model"] == "seedream-5-pro-edit"
     assert fake.calls[0][2]["output_format"] == "png"
+    assert fake.calls[0][2]["background"] == "transparent"
 
 
 def test_get_fetches_by_id():

@@ -34,7 +34,8 @@ RSpec.describe RunApi::Seedream::Resources::TextToImage do
         source_image_urls: ["https://cdn.runapi.ai/public/samples/image.jpg"],
         aspect_ratio: "3:2",
         output_quality: "basic",
-        output_format: "png"
+        output_format: "png",
+        background: "transparent"
       }
       expect(http).to receive(:request).with(:post, edit_endpoint, body: params).and_return("id" => "task-5-pro")
 

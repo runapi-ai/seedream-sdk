@@ -103,6 +103,7 @@ describe('TextToImage', () => {
       output_quality: 'basic',
       output_format: 'png',
       enable_safety_checker: false,
+      background: 'transparent',
     });
 
     expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/seedream/edit_image', {
@@ -114,6 +115,7 @@ describe('TextToImage', () => {
         output_quality: 'basic',
         output_format: 'png',
         enable_safety_checker: false,
+        background: 'transparent',
       },
     });
   });

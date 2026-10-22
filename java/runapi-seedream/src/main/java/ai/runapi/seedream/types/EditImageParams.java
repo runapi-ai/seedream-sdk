@@ -12,6 +12,7 @@ public final class EditImageParams {
   private final String outputQuality;
   private final String outputFormat;
   private final List<String> sourceImageUrls;
+  private final String background;
   private final String outputResolution;
   private final Integer outputCount;
   private final Integer seed;
@@ -25,6 +26,7 @@ public final class EditImageParams {
     this.outputQuality = builder.outputQuality;
     this.outputFormat = builder.outputFormat;
     this.sourceImageUrls = SeedreamParamUtils.strings(builder.sourceImageUrls);
+    this.background = builder.background;
     this.outputResolution = builder.outputResolution;
     this.outputCount = builder.outputCount;
     this.seed = builder.seed;
@@ -51,6 +53,7 @@ public final class EditImageParams {
     raw.put("output_quality", SeedreamParamUtils.wireValue(outputQuality));
     raw.put("output_format", SeedreamParamUtils.wireValue(outputFormat));
     raw.put("source_image_urls", SeedreamParamUtils.wireValue(sourceImageUrls));
+    raw.put("background", SeedreamParamUtils.wireValue(background));
     raw.put("output_resolution", SeedreamParamUtils.wireValue(outputResolution));
     raw.put("output_count", SeedreamParamUtils.wireValue(outputCount));
     raw.put("seed", SeedreamParamUtils.wireValue(seed));
@@ -69,6 +72,7 @@ public final class EditImageParams {
     private String outputQuality;
     private String outputFormat;
     private List<String> sourceImageUrls;
+    private String background;
     private String outputResolution;
     private Integer outputCount;
     private Integer seed;
@@ -117,6 +121,15 @@ public final class EditImageParams {
     /** Sets the source image URLs. */
     public Builder sourceImageUrls(List<String> value) {
       this.sourceImageUrls = value;
+      return this;
+    }
+
+    /**
+     * Sets the Seedream 5 Pro edit background mode. {@code transparent} keeps the transparent background of
+     * exactly one PNG source image with an alpha channel and requires output format png.
+     */
+    public Builder background(String value) {
+      this.background = value;
       return this;
     }
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [js/v0.5.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.5.0), [ruby/v0.5.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.5.0), [go/v0.5.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.5.0), [python/v0.5.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.5.0), [java/v0.4.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/java%2Fv0.4.0) - 2026-10-22
+
+### Added
+- Seedream 5 Pro edit accepts an optional background field; transparent keeps the transparent background of exactly one PNG source image and requires output_format png. Other Seedream edit models reject background.
+
+### Changed
+- Seedream 5 Lite prompts accept 4-2995 characters, Seedream 5 Pro prompts need at least 4 characters, and Seedream v4 seed is at most 1000000.
+
+
 ## [js/v0.4.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/js%2Fv0.4.0), [ruby/v0.4.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/ruby%2Fv0.4.0), [go/v0.4.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/go%2Fv0.4.0), [python/v0.4.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/python%2Fv0.4.0), [java/v0.3.0](https://github.com/runapi-ai/seedream-sdk/releases/tag/java%2Fv0.3.0) - 2026-09-30
 
 ### Changed
